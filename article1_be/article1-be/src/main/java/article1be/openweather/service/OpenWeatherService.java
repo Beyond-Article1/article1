@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 @Service
 public class OpenWeatherService {
 
-    // 프로퍼티에 있는 apikey값
+    // env에 있는 apikey값
     @Value("${open.weather.api.key}")
     private String openWeatherApiKey;
 
@@ -24,12 +24,12 @@ public class OpenWeatherService {
     private String openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
     // 날씨 데이터 불러오기
-    public OpenWeather getWeatherData() throws UnsupportedEncodingException {
+    public OpenWeather getWeatherData(String lat, String lon) throws UnsupportedEncodingException {
         StringBuilder urlBuilder = new StringBuilder(openWeatherApiUrl);
 
 //        urlBuilder.append("?" + URLEncoder.encode("q", "UTF-8") + "=Seoul");
-        urlBuilder.append("?" + URLEncoder.encode("lat", "UTF-8") + "=37.22296455822422");
-        urlBuilder.append("&" + URLEncoder.encode("lon", "UTF-8") + "=127.05652887872013");
+        urlBuilder.append("?" + URLEncoder.encode("lat", "UTF-8") + "=" + lat);
+        urlBuilder.append("&" + URLEncoder.encode("lon", "UTF-8") + "=" + lon);
         urlBuilder.append("&" + URLEncoder.encode("appid", "UTF-8") + "=" + openWeatherApiKey);
         urlBuilder.append("&" + URLEncoder.encode("lang", "UTF-8") + "=kr");
         urlBuilder.append("&" + URLEncoder.encode("units", "UTF-8") + "=metric");
