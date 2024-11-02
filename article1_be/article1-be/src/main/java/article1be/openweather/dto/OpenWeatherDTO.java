@@ -9,7 +9,7 @@ import java.util.List;
  * 현재 날씨 데이터
  */
 @Data
-public class OpenWeather {
+public class OpenWeatherDTO {
 
     private List<Weather> weather;
 

@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### .env 설정값 무시 ###
-.env
+*.env
 
 # Logs
 logs
