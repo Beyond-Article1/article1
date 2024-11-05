@@ -5,12 +5,12 @@ import {createRouter, createWebHistory} from "vue-router";
 
 const routes = [
     {
-        path: "/",
+        path: "/map",
         name: "MapWithDateView",
         component: MapWithDateView,
     },
     {
-        path: "/select-situation",
+        path: "/map/select-situation",
         name: "SelectSituation",
         component: SelectSituation,
     },

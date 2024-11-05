@@ -1,13 +1,7 @@
-<script setup>
-import MainView from "@/views/main/MainView.vue";
-</script>
+<script setup></script>
 
 <template>
   <div id="app">
-    <router-view />
-  </div>
-
-  <div class="main">
     <RouterView />
   </div>
 </template>
@@ -27,9 +21,8 @@ export default {
   color: #2c3e50;
   margin-top: 0;
 }
-<style>
-  body{
-    margin: 0;
-    padding: 0;
-  }
+body{
+  margin: 0;
+  padding: 0;
+}
 </style>
