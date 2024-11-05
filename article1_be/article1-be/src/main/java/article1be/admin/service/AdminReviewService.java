@@ -28,8 +28,7 @@ public class AdminReviewService {
                         "location",
                         review.getReviewWeather() + "°C",
                         review.getReviewContent(),
-                        review.getReviewBlind() ? "BLIND" : "ACTIVE",
-                        review.getReviewReport()
+                        review.getReviewBlind() ? "BLIND" : "ACTIVE"
                 ))
                 .collect(Collectors.toList());
     }

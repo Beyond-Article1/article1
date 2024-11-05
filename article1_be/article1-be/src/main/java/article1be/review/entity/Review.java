@@ -40,12 +40,9 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_like_yn", nullable = false)
     private Boolean reviewLikeYn; // 좋아요 여부
 
-    @Column(name = "review_report", nullable = false)
-    private Integer reviewReport; // 신고 개수
 
     public Review(Long userSeq, Long selectSeq, String reviewContent, Double reviewWeather,
-                  Double reviewLocation, Boolean reviewBlind, Boolean reviewLikeYn,
-                  Integer reviewReport) {
+                  Double reviewLocation, Boolean reviewBlind, Boolean reviewLikeYn) {
         this.userSeq = userSeq;
         this.selectSeq = selectSeq;
         this.reviewContent = reviewContent;
@@ -53,8 +50,8 @@ public class Review extends BaseTimeEntity {
         this.reviewLocation = reviewLocation;
         this.reviewBlind = reviewBlind;
         this.reviewLikeYn = reviewLikeYn;
-        this.reviewReport = reviewReport != null ? reviewReport : 0;
     }
+
 
     // 리뷰 내용 업데이트
     public void updateReview(String reviewContent, Double reviewWeather, Double reviewLocation,
@@ -66,12 +63,8 @@ public class Review extends BaseTimeEntity {
         this.reviewLikeYn = reviewLikeYn;
     }
 
-    // 신고 횟수 증가 및 블라인드 처리
-    public void addReport() {
-        this.reviewReport += 1;
-        if (this.reviewReport >= 10) {
-            this.reviewBlind = true;
-        }
-
+    // 블라인드 처리
+    public void setBlind() {
+        this.reviewBlind = true;
     }
 }

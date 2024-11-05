@@ -49,4 +49,8 @@ public class Board extends BaseTimeEntity {
         this.boardTitle = requestBoard.getBoardTitle();
         this.boardContent = requestBoard.getBoardContent();
     }
+
+    public void setBlind() {
+        this.boardIsBlind = true;
+    }
 }

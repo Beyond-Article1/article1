@@ -24,7 +24,6 @@ public class AdminReviewDTO {
         private String weather;         // 날씨 정보 (예: 10°C)
         private String reviewContent;   // 리뷰 내용
         private String reviewStatus;    // 리뷰 상태 (ACTIVE 또는 BLIND)
-        private Integer reviewReport;   // 신고 개수
     }
 
     // 리뷰 상태 업데이트 요청 DTO
