@@ -25,10 +25,10 @@ public class User {
     private Long userSeq;                       // 회원번호
 
     @Column(name = "style_seq")
-    private UserStyle styleSeq;                      // 스타일 번호
+    private Long styleSeq;                      // 스타일 번호
 
     @Column(name = "condition_seq")
-    private UserCondition conditionSeq;                  // 체질 번호
+    private Long conditionSeq;                  // 체질 번호
 
     @Column(name = "user_social_site")
     @Enumerated(EnumType.STRING)
