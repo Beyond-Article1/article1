@@ -1,11 +1,11 @@
 <script setup>
-import MainView from "@/views/main/MainView.vue";
+import Header from "@/components/Header.vue";
 </script>
 
 <template>
-
+  <Header />
   <div class="main">
-    <RouterView />
+    <RouterView key="$route.fullPath"/>
   </div>
 </template>
 
@@ -13,5 +13,6 @@ import MainView from "@/views/main/MainView.vue";
   body{
     margin: 0;
     padding: 0;
+    background-image: url('@/assets/images/back-main.png');
   }
 </style>
