@@ -274,14 +274,31 @@ public class OpenWeatherService {
      * 지정시간 ~ 다음날 00시까지의 데이터 조회 서비스 (날씨코드, 온도, 체감온도, 날씨아이콘, 미세먼지 농도, 초미세먼지 농도, 지정시간 ~ 다음날 00시까지의 (최저기온, 최고기온)
      */
     public ResponseMainWeatherDTO getMainWeatherData(String inputTime, String lat, String lon) throws UnsupportedEncodingException {
+
         // 입력 받은 시간을 LocalDateTime으로 변경
-        LocalDateTime inputLocalDateTime = LocalDateTime.parse(inputTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime inputLocalDateTime = DateTimeUtil.stringParseToLocalDateTime(inputTime);
 
         // 다음날 00시 계산
         LocalDateTime tomorrowTime = getTomorrowTime(inputLocalDateTime);
 
         // 현재 시간
         LocalDateTime nowTime = LocalDateTime.now();
+
+        // 현재시간인지, 최근 데이터인지 검증 변수
+        boolean checkDate = false;
+
+        // 지정시간과 요청시간의 차이가 얼마 나지 않으면 현재 시간을 호출 (&& 3시간단위로 있는 다음 데이터시간과 1시간 이상 차이 나야함)
+        int timeDiff = inputLocalDateTime.getHour() / 3;
+        if (timeDiff != 0){
+
+            // 다음 데이터가 있는 시간
+            LocalDateTime dataDate = inputLocalDateTime.withHour((timeDiff + 1) * 3).withMinute(0).withSecond(0).withNano(0);
+
+            // 지정시간이 현재시간보다 1시간 이내, 다음 데이터시간보다 1시간 이상일때는 현재시간으로 조회
+            if (Duration.between(nowTime, inputLocalDateTime).toHours() <= 1 && Duration.between(inputLocalDateTime, dataDate).toHours() >= 1){
+                checkDate = true;
+            }
+        }
 
         // 현재시간 ~ 사용자가 입력한 시간까지의 데이터 개수
         int excludeCnt = getCnt(nowTime, inputLocalDateTime);
@@ -304,15 +321,30 @@ public class OpenWeatherService {
         // 반환할 객체 인스턴스 할당
         ResponseMainWeatherDTO responseMainWeatherDTO = new ResponseMainWeatherDTO();
 
-        // 지정시간에 가장 가까운 (날씨코드, 아이콘, 온도, 체감온도) 기입
-        responseMainWeatherDTO.setNowWeatherCode(weatherListDTOS.get(0).getWeather().get(0).getId());
-        responseMainWeatherDTO.setNowWeatherIcon(weatherListDTOS.get(0).getWeather().get(0).getIcon());
-        responseMainWeatherDTO.setNowTemp(weatherListDTOS.get(0).getMain().getTemp());
-        responseMainWeatherDTO.setNowFeelsLike(weatherListDTOS.get(0).getMain().getFeels_like());
+        if (checkDate){
+            // 지정시간이 현재시간과 비슷하다면 현재시간 기입
+            OpenWeatherDTO currentWeatherData = getCurrentWeatherData(lat, lon);
+            responseMainWeatherDTO.setNowWeatherCode(currentWeatherData.getWeather().get(0).getId());
+            responseMainWeatherDTO.setNowWeatherDescription(currentWeatherData.getWeather().get(0).getDescription());
+            responseMainWeatherDTO.setNowTemp(currentWeatherData.getMain().getTemp());
+            responseMainWeatherDTO.setNowFeelsLike(currentWeatherData.getMain().getFeels_like());
+            responseMainWeatherDTO.setNowWeatherIcon(currentWeatherData.getWeather().get(0).getIcon());
 
-        // 가장가깝게 가져온 시간 기입 dt변환
-        LocalDateTime appointmentTime = DateTimeUtil.dtParseToLocalDateTime(weatherListDTOS.get(0).getDt());
-        responseMainWeatherDTO.setNowTime(appointmentTime);
+            // 현재시간 기반
+            LocalDateTime callTime = DateTimeUtil.dtParseToLocalDateTime(currentWeatherData.getDt());
+            responseMainWeatherDTO.setNowTime(callTime);
+        } else {
+            // 지정시간에 가장 가까운 (날씨코드, 아이콘, 온도, 체감온도) 기입
+            responseMainWeatherDTO.setNowWeatherCode(weatherListDTOS.get(0).getWeather().get(0).getId());
+            responseMainWeatherDTO.setNowWeatherIcon(weatherListDTOS.get(0).getWeather().get(0).getIcon());
+            responseMainWeatherDTO.setNowWeatherDescription(weatherListDTOS.get(0).getWeather().get(0).getDescription());
+            responseMainWeatherDTO.setNowTemp(weatherListDTOS.get(0).getMain().getTemp());
+            responseMainWeatherDTO.setNowFeelsLike(weatherListDTOS.get(0).getMain().getFeels_like());
+
+            // 가장가깝게 가져온 시간 기입 dt변환
+            LocalDateTime appointmentTime = DateTimeUtil.dtParseToLocalDateTime(weatherListDTOS.get(0).getDt());
+            responseMainWeatherDTO.setNowTime(appointmentTime);
+        }
 
         // 이후 시간들의 데이터 기입
         responseMainWeatherDTO.setList(weatherListDTOS);

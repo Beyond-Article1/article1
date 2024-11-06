@@ -16,6 +16,9 @@ public class ResponseMainWeatherDTO {
     // 지정시간 날씨아이콘
     private String nowWeatherIcon;
 
+    // 지정시간 설명
+    private String nowWeatherDescription;
+
     // 지정시간 온도
     private float nowTemp;
 
