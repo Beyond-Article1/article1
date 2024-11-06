@@ -38,9 +38,9 @@ public class SelectRecord {
 
     private Double precipitation; //강수량
 
-    public static SelectRecord create(OutfitSelectionRequestDTO requestDTO) {
+    public static SelectRecord create(OutfitSelectionRequestDTO requestDTO, Long userSeq) {
         SelectRecord selectRecord = new SelectRecord();
-        selectRecord.userSeq = requestDTO.getUserSeq();
+        selectRecord.userSeq = userSeq;
         selectRecord.situationSeq = requestDTO.getSituationSeq();
         selectRecord.selectDate = LocalDateTime.now(); // selectDate를 현재 시간으로 설정
         selectRecord.customDate = requestDTO.getCustomDate();

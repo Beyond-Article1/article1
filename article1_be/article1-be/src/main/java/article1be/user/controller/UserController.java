@@ -23,17 +23,28 @@ public class UserController {
 
     private final UserService userService;
 
-    /* 회원가입 시 닉네임, 선호도 등록 */
+    /* 회원가입 시, 닉네임, 선호도 등록 */
     @Operation(summary = "닉네임, 선호도 등록", description = "회원가입 시 닉네임과 선호도(체질, 스타일) 등록")
     @PostMapping("/data")
     public ResponseEntity<Void> createUserData(@RequestBody @Valid UserDataDTO userData) {
-
         userService.createUserData(userData);
 
         return ResponseEntity.ok().build();
     }
 
-    /* 회원정보(닉네임) 수정 */
+    // 회원 개인 정보 조회
+    @Operation(summary = "회원 정보 조회", description = "로그인 한 회원이 자신의 개인 정보를 조회")
+    @GetMapping("/detail")
+    public ResponseEntity<UserResponseDTO> getUserDetails() {
+        Long userSeq = SecurityUtil.getCurrentUserSeq();
+        UserResponseDTO userDetail = userService.getUserDetail(userSeq);
+
+        System.out.println(userDetail.toString());
+
+        return ResponseEntity.ok(userDetail);
+    }
+
+    // 회원 정보 (닉네임) 수정
     @Operation(summary = "닉네임 수정", description = "로그인한 회원의 닉네임 수정")
     @PutMapping("/nickname")
     public ResponseEntity<String> updateUserNickname(@RequestBody @Valid UserUpdateDTO updateData) {
@@ -42,37 +53,26 @@ public class UserController {
 
         if(userSeq != null) {
             userService.updateUser(userSeq, updateData.getUserNickname());
+
             return ResponseEntity.ok("닉네임 수정 성공");
         } else {
             throw new CustomException(ErrorCode.NEED_LOGIN);
         }
     }
 
-    /* 회원 탈퇴 (soft delete) */
+    // 회원 탈퇴 (soft delete)
     @Operation(summary = "탈퇴", description = "회원 탈퇴")
     @DeleteMapping
     public ResponseEntity<String> deleteUser() {
-
         Long userSeq = SecurityUtil.getCurrentUserSeq();
 
         if(userSeq != null) {
             userService.deleteUser(userSeq);
+
             return ResponseEntity.ok("탈퇴 성공");
         } else {
             throw new CustomException(ErrorCode.NEED_LOGIN);
         }
-    }
-
-    /* 회원 개인정보 조회 */
-    @Operation(summary = "회원 정보 조회", description = "로그인한 회원이 자신의 개인정보를 조회")
-    @GetMapping("/detail")
-    public ResponseEntity<UserResponseDTO> getUserDetails() {
-
-        Long userSeq = SecurityUtil.getCurrentUserSeq();
-
-        UserResponseDTO userDetail = userService.getUserDetail(userSeq);
-        System.out.println(userDetail.toString());
-        return ResponseEntity.ok(userDetail);
     }
 
     /* 로그아웃 */
@@ -120,7 +120,6 @@ public class UserController {
         } else {
             throw new CustomException(ErrorCode.NEED_LOGIN);
         }
-
     }
 
 }

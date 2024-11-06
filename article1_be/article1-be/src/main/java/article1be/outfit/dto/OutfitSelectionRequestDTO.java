@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OutfitSelectionRequestDTO {
-    private Long userSeq;
     private Long situationSeq;
     private LocalDateTime customDate;
     private String customLocation;

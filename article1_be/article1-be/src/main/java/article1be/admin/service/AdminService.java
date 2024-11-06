@@ -57,9 +57,10 @@ public class AdminService {
         User user = adminRepository.findById(updateRequest.getUserSeq())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        user.setUserNickname(updateRequest.getUserNickname());
-        user.setUserState(updateRequest.getUserState());
-        user.setUserAuth(updateRequest.getUserAuth());
+        user.AdminUserInfo(
+                updateRequest.getUserNickname(),
+                updateRequest.getUserState(),
+                updateRequest.getUserAuth());
 
         adminRepository.save(user);
     }

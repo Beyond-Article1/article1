@@ -40,13 +40,12 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userSeq) throws UsernameNotFoundException {
-        /* 인증 토큰에 담긴 userSeq가 메소드로 넘어오므로 해당 값을 기준으로 DB에서 조회한다. (전달된 아이디 기준으로 DB 조회한다) */
-
+        // 인증 토큰에 담긴 userSeq가 메소드로 넘어오므로 해당 값을 기준으로 DB에서 조회 (전달된 아이디 기준으로 DB 조회)
         User loginUser = userRepository.findByUserSeq(Long.parseLong(userSeq))  // JPA 쓰고 있으므로 findByUserId 활용
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with userSeq: " + userSeq));  // Id가 존재하지 않으면(해당 Id가 조회되지 않으면) Exception 발생
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with userSeq : " + userSeq));  // Id가 존재하지 않으면 (해당 Id가 조회되지 않으면) Exception 발생
 
-        /* 권한이 여러가지 있을 수 있다. 기본적으로 권한은 Collection Type으로 담도록 되어있다.
-         *  우리는 심플하게 두가지(USER, ADMIN)로만 나누었기 때문에 코드로 가공해서 기재되어 있는 USER or ADMIN 권한 하나만 넣도록 한다. */
+        // 권한이 여러 가지 있을 수 있으므로, 기본적으로 권한은 Collection Type으로 담도록 구성
+        // 우리는 심플하게 두 가지 (USER, ADMIN)으로만 나누었기 때문에, 코드로 가공해서 기재되어 있는 USER or ADMIN 권한 하나만 주입
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(loginUser.getUserAuth().name()));
 
@@ -58,14 +57,11 @@ public class UserService implements UserDetailsService {
                 String.valueOf(loginUser.getUserSeq()), password, grantedAuthorities);
     }
 
-
-    /* 회원 닉네임, 선호도 등록 */
+    // 회원 닉네임, 선호도 등록
     @Transactional
     public void createUserData(@Valid UserDataDTO userData) {
-
         // 닉네임 중복 검증
         if (checkUserNickname(userData.getUserNickname(), null)) {
-
             Long userSeq = SecurityUtil.getCurrentUserSeq();
 
             User findUser = userRepository.findByUserSeq(userSeq)
@@ -79,38 +75,13 @@ public class UserService implements UserDetailsService {
             findUser.createUserData(userData, style, condition);
 
         }
-
     }
 
-    /* 회원정보(닉네임) 수정 */
-    @Transactional
-    public void updateUser(Long userSeq, String newNickname) {
-
-        // 닉네임 중복 검증
-        if (checkUserNickname(newNickname, userSeq)) {
-
-            User findUser = userRepository.findByUserSeq(userSeq)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
-            findUser.updateUser(newNickname);
-            userRepository.save(findUser);
-        }
-    }
-
-    /* 회원 탈퇴 (soft delete) */
-    @Transactional
-    public void deleteUser(Long userSeq) {
-
-        userRepository.deleteById(userSeq);
-    }
-
-    /* 회원 개인정보 조회 */
+    // 회원 개인 정보 조회
     @Transactional
     public UserResponseDTO getUserDetail(Long userSeq) {
-
         User findUser = userRepository.findByUserSeq(userSeq)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
 
         return new UserResponseDTO(
                 findUser.getUserSeq(),
@@ -123,14 +94,33 @@ public class UserService implements UserDetailsService {
                 findUser.getUserGender(),
                 findUser.getRegDate()
         );
+    }
 
+    // 회원 정보 (닉네임) 수정
+    @Transactional
+    public void updateUser(Long userSeq, String newNickname) {
+        // 닉네임 중복 검증
+        if (checkUserNickname(newNickname, userSeq)) {
+            User findUser = userRepository.findByUserSeq(userSeq)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+            findUser.updateUser(newNickname);
+
+            userRepository.save(findUser);
+        }
+    }
+
+    // 회원 탈퇴 (soft delete)
+    @Transactional
+    public void deleteUser(Long userSeq) {
+        userRepository.deleteById(userSeq);
     }
 
     /* 선호도 조회 */
     @Transactional
     public PreferenceResponseDTO getUserPreference(Long userSeq) {
 
-         // User 엔티티와 관련된 Style, Condition을 한 번에 조회
+        // User 엔티티와 관련된 Style, Condition을 한 번에 조회
         User user = userRepository.findByUserSeqWithStyleAndCondition(userSeq)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -158,22 +148,17 @@ public class UserService implements UserDetailsService {
 
     }
 
-    /* 닉네임 중복 검증 */
+    // 닉네임 중복 검증
     @Transactional
     public boolean checkUserNickname(String userNickname, Long userSeq) {
         Optional<User> findNickname = userRepository.findByUserNickname(userNickname);
 
-        if (findNickname.isEmpty()) {
-            return true;
-        }
-
-        if (Objects.equals(findNickname.get().getUserSeq(), userSeq)) {
-            return true;
-        }
+        if(findNickname.isEmpty()) return true;
+        if(Objects.equals(findNickname.get().getUserSeq(), userSeq)) return true;
 
         log.info("닉네임 값 중복 {}", userNickname);
-        throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
 
+        throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
     }
 
 }

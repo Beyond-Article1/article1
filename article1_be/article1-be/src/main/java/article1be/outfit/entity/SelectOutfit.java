@@ -15,14 +15,18 @@ public class SelectOutfit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long selectOutfitSeq;
 
-    private Long outfitSeq;
+    @ManyToOne
+    @JoinColumn(name = "outfit_seq", nullable = false)
+    private Outfit outfit;
 
-    private Long selectSeq;
+    @ManyToOne
+    @JoinColumn(name = "select_seq", nullable = false)
+    private SelectRecord selectRecord;
 
-    public static SelectOutfit create(Long selectSeq, Long outfitSeq) {
+    public static SelectOutfit create(SelectRecord selectRecord, Outfit outfit) {
         SelectOutfit selectOutfit = new SelectOutfit();
-        selectOutfit.selectSeq = selectSeq;
-        selectOutfit.outfitSeq = outfitSeq;
+        selectOutfit.selectRecord = selectRecord;
+        selectOutfit.outfit = outfit;
         return selectOutfit;
     }
 }

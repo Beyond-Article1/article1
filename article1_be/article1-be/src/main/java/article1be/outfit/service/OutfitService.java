@@ -1,22 +1,29 @@
 package article1be.outfit.service;
 
+import article1be.openweather.dto.response.ResponseMainWeatherDTO;
 import article1be.openweather.dto.response.ResponseTodayDTO;
 import article1be.openweather.service.OpenWeatherService;
 import article1be.outfit.dto.OutfitRequestDTO;
 import article1be.outfit.dto.OutfitResponseDTO;
 import article1be.outfit.entity.Outfit;
 import article1be.outfit.entity.OutfitCategory;
+import article1be.outfit.entity.OutfitGender;
 import article1be.outfit.entity.OutfitLevel;
 import article1be.outfit.repository.OutfitRepository;
 import article1be.outfit.repository.OutfitSituationRepository;
 import article1be.outfit.repository.OutfitStyleRepository;
+import article1be.outfit.repository.SelectOutfitRepository;
+import article1be.security.util.SecurityUtil;
+import article1be.user.entity.Condition;
+import article1be.user.entity.User;
+import article1be.user.entity.UserGender;
+import article1be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.io.UnsupportedEncodingException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,95 +34,161 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OutfitService {
     private final OpenWeatherService weatherService;
-    private final OutfitRepository outfitRepository; // Outfit 데이터를 가져오는 Repository
+    private final OutfitRepository outfitRepository;
     private final OutfitSituationRepository outfitSituationRepository;
     private final OutfitStyleRepository outfitStyleRepository;
+    private final UserRepository userRepository;
+    private final SelectOutfitRepository selectOutfitRepository;
 
-    public  Map<OutfitCategory, List<OutfitResponseDTO>> getRecommendedOutfits(OutfitRequestDTO requestDTO) throws UnsupportedEncodingException {
+    public Map<OutfitCategory, List<OutfitResponseDTO>> getUserRecommendedOutfits(OutfitRequestDTO requestDTO, Long userSeq) throws UnsupportedEncodingException {
+        User user = userRepository.findById(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        // 1. 날씨 데이터 가져오기 - 날짜,시간이 적용될 수 있도록 수정되어야 할듯.
-        ResponseTodayDTO weatherData = weatherService.getTodayWeatherData(String.valueOf(requestDTO.getLatitude()), String.valueOf(requestDTO.getLongitude()));
+        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+
+        ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
+                requestedAtFormatted,
+                String.valueOf(requestDTO.getLatitude()),
+                String.valueOf(requestDTO.getLongitude()));
 
         if (weatherData == null) {
             throw new IllegalStateException("날씨 정보를 가져올 수 없습니다.");
         }
 
-        // 날씨 데이터에서 필요한 정보 추출
         double maxTemp = weatherData.getHighTemp();
         double minTemp = weatherData.getLowTemp();
-        int airQuality = weatherData.getAqi();
-        int weatherCode = weatherData.getList().get(0).getWeather().get(0).getId(); // 임시로 첫 번째 날씨 코드 사용
-        log.info("최고 온도: "+ maxTemp);
-        log.info("최저 온도: "+ minTemp);
-        log.info("공기질: "+airQuality);
-        log.info("날씨코드: "+weatherCode);
+        double pm2_5 = weatherData.getPm2_5();
+        double pm_10 = weatherData.getPm10();
+        int weatherCode = weatherData.getList().get(0).getWeather().get(0).getId();
 
-        // 회원의 이전 선택 기록을 가져와서 점수 계산에 활용 - user 구현 후 적용
-        /*Set<Long> previouslyChosenOutfitIds = userPreferenceRepository.findPreviouslyChosenOutfitIdsByUser(userSeq);*/
+        log.info("최고 온도: " + maxTemp);
+        log.info("최저 온도: " + minTemp);
+        log.info("날씨코드: " + weatherCode);
 
-        // 회원의 선호 style - user 구현 후 적용
-        // Long styleSeq = preferenceRepository.findStyleSeqByUserSeq(userSeq);
+        boolean needMask = pm_10 >= 81 || pm2_5 >= 36;
 
-        // test 위한 임시 styleSeq 지정
-        long styleSeq = 1;
+        Condition condition = user.getCondition();
+        if (condition != null) {
+            if (condition.getConditionSeq() == 1) {
+                maxTemp -= 3;
+                minTemp -= 3;
+            } else if (condition.getConditionSeq() == 2) {
+                maxTemp += 3;
+                minTemp += 3;
+            }
+        }
 
-        // 4. 각 옷에 점수를 매기고 카테고리별로 상위 3개씩 추출
+        UserGender userGender = user.getUserGender();
+        Long styleSeq = user.getStyle() != null ? user.getStyle().getStyleSeq() : null;
+        log.info("회원 스타일 번호 : "+styleSeq);
+
         Map<OutfitCategory, List<OutfitResponseDTO>> recommendedOutfits = new HashMap<>();
+
         for (OutfitCategory outfitCategory : OutfitCategory.values()) {
-            //날씨 정보에 맞는 옷만 필터링
-            log.info("카테고리 :"+outfitCategory);
-            List<Outfit> outfits = outfitRepository.findByCategoryAndWeatherConditions(outfitCategory,minTemp,maxTemp,weatherCode);
-            log.info("outfit들: "+outfits+"\n");
-            //필터링된 옷들에 대해 점수를 계산하고 내림차순으로 정렬, 상위 3개만 return.
-            List<OutfitResponseDTO> topOutfits = outfits.stream()
+
+
+            List<Outfit> filteredOutfits = outfitRepository.findByCategoryAndWeatherConditions(outfitCategory, minTemp, maxTemp, weatherCode)
+                    .stream()
+                    .filter(outfit -> outfit.getOutfitGender() == OutfitGender.N ||
+                            (userGender == UserGender.MALE && outfit.getOutfitGender() == OutfitGender.M) ||
+                            (userGender == UserGender.FEMALE && outfit.getOutfitGender() == OutfitGender.F))
+                    .filter(outfit -> !(!needMask && outfit.getOutfitCategory() == OutfitCategory.ACCESSORY && "마스크".equals(outfit.getOutfitName())))
+                    .toList();
+
+            List<OutfitResponseDTO> topOutfits = filteredOutfits.stream()
                     .sorted((o1, o2) -> Integer.compare(
-                            calculateScore(o2, requestDTO.getSituationSeq(), styleSeq, airQuality/*, previouslyChosenOutfitIds*/),
-                            calculateScore(o1, requestDTO.getSituationSeq(), styleSeq,airQuality/*, previouslyChosenOutfitIds*/)
+                            calculateScore(o2, requestDTO.getSituationSeq(), styleSeq, userSeq),
+                            calculateScore(o1, requestDTO.getSituationSeq(), styleSeq, userSeq)
                     ))
-                    .map(outfit -> new OutfitResponseDTO(outfit.getOutfitSeq(),outfit.getOutfitName(), outfit.getOutfitImg()))
+                    .map(outfit -> new OutfitResponseDTO(outfit.getOutfitSeq(), outfit.getOutfitName(), outfit.getOutfitImg()))
                     .collect(Collectors.toList());
 
             recommendedOutfits.put(outfitCategory, topOutfits);
         }
 
         return recommendedOutfits;
+    }
 
+    public Map<OutfitCategory, List<OutfitResponseDTO>> getGuestRecommendedOutfits(OutfitRequestDTO requestDTO) throws UnsupportedEncodingException {
+
+        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+
+        ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
+                requestedAtFormatted,
+                String.valueOf(requestDTO.getLatitude()),
+                String.valueOf(requestDTO.getLongitude()));
+
+        if (weatherData == null) {
+            throw new IllegalStateException("날씨 정보를 가져올 수 없습니다.");
+        }
+
+        double maxTemp = weatherData.getHighTemp();
+        double minTemp = weatherData.getLowTemp();
+        double pm2_5 = weatherData.getPm2_5();
+        double pm_10 = weatherData.getPm10();
+        int weatherCode = weatherData.getList().get(0).getWeather().get(0).getId();
+
+        log.info("최고 온도: " + maxTemp);
+        log.info("최저 온도: " + minTemp);
+        log.info("날씨코드: " + weatherCode);
+
+        boolean needMask = pm_10 >= 81 || pm2_5 >= 36;
+
+        Map<OutfitCategory, List<OutfitResponseDTO>> recommendedOutfits = new HashMap<>();
+
+        for (OutfitCategory outfitCategory : OutfitCategory.values()) {
+            log.info("카테고리 :" + outfitCategory);
+
+            List<Outfit> filteredOutfits = outfitRepository.findByCategoryAndWeatherConditions(outfitCategory, minTemp, maxTemp, weatherCode)
+                    .stream()
+                    .filter(outfit -> !(!needMask && outfit.getOutfitCategory() == OutfitCategory.ACCESSORY && "마스크".equals(outfit.getOutfitName())))
+                    .toList();
+
+            List<OutfitResponseDTO> topOutfits = filteredOutfits.stream()
+                    .sorted((o1, o2) -> Integer.compare(
+                            calculateScore(o2, requestDTO.getSituationSeq(), null, null),
+                            calculateScore(o1, requestDTO.getSituationSeq(), null, null)
+                    ))
+                    .map(outfit -> new OutfitResponseDTO(outfit.getOutfitSeq(), outfit.getOutfitName(), outfit.getOutfitImg()))
+                    .collect(Collectors.toList());
+
+            recommendedOutfits.put(outfitCategory, topOutfits);
+        }
+
+        return recommendedOutfits;
     }
 
     // 각 옷에 점수를 매기는 메서드
-    private int calculateScore(Outfit outfit, Long situationSeq , Long styleSeq, int airQuality/*, Set<Long> previouslyChosenOutfitIds*/) {
+    private int calculateScore(Outfit outfit, Long situationSeq, Long styleSeq, Long userSeq) {
         int score = 0;
 
-        // 상황에 맞는 옷에 점수 추가
         if (outfitSituationRepository.existsByOutfit_OutfitSeqAndSituation_SituationSeq(outfit.getOutfitSeq(), situationSeq)) {
             score += 10;
         }
 
-        // 회원의 스타일에 맞는 옷에 점수 추가
-        if (outfitStyleRepository.existsByOutfit_OutfitSeqAndStyle_StyleSeq(outfit.getOutfitSeq(), styleSeq)) {
+        if (styleSeq != null && outfitStyleRepository.existsByOutfit_OutfitSeqAndStyle_StyleSeq(outfit.getOutfitSeq(), styleSeq)) {
             score += 5;
         }
 
-        // 필수, 권장, 선택에 따라 점수 추가
         if (outfit.getOutfitLevel() == OutfitLevel.REQUIRED) {
             score += 20;
         } else if (outfit.getOutfitLevel() == OutfitLevel.RECOMMENDED) {
             score += 10;
         }
 
-        // 해당 outfit이 마스크이고, 공기질이 안좋으면 점수 999점 추가
         if (outfit.getOutfitCategory() == OutfitCategory.ACCESSORY &&
-                "마스크".equals(outfit.getOutfitName()) &&
-                airQuality >= 4) { // 예를 들어, airQuality가 4 이상이면 공기질이 안 좋음
+                ("마스크".equals(outfit.getOutfitName()) || "우산".equals(outfit.getOutfitName()))) {
             score += 999;
         }
 
-        // 회원이 이전에 선택한 옷에 추가 점수
-        /*if (previouslyChosenOutfitIds.contains(outfit.getOutfitSeq())) {
-            score += 3;
-        }*/
+        if (userSeq != null) {
+            int selectionCount = selectOutfitRepository.countByOutfitAndSelectRecord_UserSeq(outfit, userSeq);
+            score += selectionCount * 3; // 선택 횟수당 3점 가산점 추가
+        }
+
         return score;
     }
+
 
 
 }

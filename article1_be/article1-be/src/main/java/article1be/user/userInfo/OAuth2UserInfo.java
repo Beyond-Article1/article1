@@ -2,13 +2,13 @@ package article1be.user.userInfo;
 
 public interface OAuth2UserInfo {
 
-    String getProviderId(); // google, naver, kakao
-    String getGetProvider(); // google, naver, kakao
-    String getEmail(); // google, naver, kakao
-    String getName(); // google, naver, kakao
-    String getGender(); // naver, kakao
-    String getBirthday(); // naver, kakao
-    String getBirthyear(); // naver, kakao
+    String getProviderId(); // kakao, naver, google
+    String getGetProvider(); // kakao, naver, google
+    String getEmail(); // kakao, naver, google
+    String getName(); // kakao, naver, google
+    String getGender(); // kakao, naver
+    String getBirthday(); // kakao, naver
+    String getBirthyear(); // kakao, naver
     String getMobile(); // naver
     String getPhoneNumber(); // kakao
 

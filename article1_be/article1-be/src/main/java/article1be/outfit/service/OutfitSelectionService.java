@@ -1,45 +1,49 @@
 package article1be.outfit.service;
 
 import article1be.outfit.dto.OutfitSelectionRequestDTO;
+import article1be.outfit.entity.Outfit;
 import article1be.outfit.entity.SelectRecord;
 import article1be.outfit.entity.SelectOutfit;
+import article1be.outfit.repository.OutfitRepository;
 import article1be.outfit.repository.SelectOutfitRepository;
 import article1be.outfit.repository.SelectRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @Service
 public class OutfitSelectionService {
     private final SelectRecordRepository selectRecordRepository;
     private final SelectOutfitRepository selectOutfitRepository;
+    private final OutfitRepository outfitRepository;
 
     @Transactional
-    public void saveSelectedOutfits(OutfitSelectionRequestDTO requestDTO) {
-        SelectRecord savedRecord = selectRecordRepository.save(SelectRecord.create(requestDTO));
+    public void saveSelectedOutfits(OutfitSelectionRequestDTO requestDTO, Long userSeq) {
+        SelectRecord savedRecord = selectRecordRepository.save(SelectRecord.create(requestDTO, userSeq));
 
-        // selectSeq 값을 사용하여 SelectOutfit 엔티티 생성 및 저장
-        saveSelectedOutfit(savedRecord.getSelectSeq(), requestDTO.getTopSeq());
-        saveSelectedOutfit(savedRecord.getSelectSeq(), requestDTO.getBottomSeq());
-        saveSelectedOutfit(savedRecord.getSelectSeq(), requestDTO.getShoesSeq());
+        // Outfit 객체를 OutfitRepository에서 조회한 후 SelectOutfit 엔티티 생성 및 저장
+        saveSelectedOutfit(savedRecord, requestDTO.getTopSeq());
+        saveSelectedOutfit(savedRecord, requestDTO.getBottomSeq());
+        saveSelectedOutfit(savedRecord, requestDTO.getShoesSeq());
 
         if (requestDTO.getOuterSeq() != null) {
-            saveSelectedOutfit(savedRecord.getSelectSeq(), requestDTO.getOuterSeq());
+            saveSelectedOutfit(savedRecord, requestDTO.getOuterSeq());
         }
 
         if (requestDTO.getAccessorySeq() != null && !requestDTO.getAccessorySeq().isEmpty()) {
             for (Long accessorySeq : requestDTO.getAccessorySeq()) {
-                saveSelectedOutfit(savedRecord.getSelectSeq(), accessorySeq);
+                saveSelectedOutfit(savedRecord, accessorySeq);
             }
         }
     }
 
     // SelectOutfit 저장
-    private void saveSelectedOutfit(Long selectSeq, Long outfitSeq) {
-        SelectOutfit selectOutfit = SelectOutfit.create(selectSeq, outfitSeq);
+    private void saveSelectedOutfit(SelectRecord selectRecord, Long outfitSeq) {
+        Outfit outfit = outfitRepository.findById(outfitSeq)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Outfit입니다: " + outfitSeq));
+
+        SelectOutfit selectOutfit = SelectOutfit.create(selectRecord, outfit);
         selectOutfitRepository.save(selectOutfit);
     }
 }

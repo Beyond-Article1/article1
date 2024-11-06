@@ -51,8 +51,8 @@ public class BoardService {
                         .regDate(board.getRegDate())
                         .upDate(board.getUpDate())
                         .delDate(board.getDelDate())
-                        .isBlind(board.getBoardIsBlind())
-                        .isNotice(board.getBoardIsNotice())
+                        .boardIsBlind(board.getBoardIsBlind())
+                        .boardIsNotice(board.getBoardIsNotice())
                         .build())
                 .collect(Collectors.toList());
 
@@ -92,8 +92,8 @@ public class BoardService {
                     .regDate(board.getRegDate())
                     .upDate(board.getUpDate())
                     .delDate(board.getDelDate())
-                    .isBlind(board.getBoardIsBlind())
-                    .isNotice(board.getBoardIsNotice())
+                    .boardIsBlind(board.getBoardIsBlind())
+                    .boardIsNotice(board.getBoardIsNotice())
                     .build();
         } else {
             return null;

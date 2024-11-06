@@ -1,6 +1,6 @@
 <template>
   <div class="situation-view">
-    <h2 class="title">그날의 아웃핏 상황을 선택해주세요.</h2>
+    <h2 class="list-title">그날의 아웃핏 상황을 선택해주세요.</h2>
     <div class="situation-container">
       <div
           v-for="situation in situations"
@@ -78,7 +78,7 @@ export default {
   color: #333;
 }
 
-.title {
+.list-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
 }

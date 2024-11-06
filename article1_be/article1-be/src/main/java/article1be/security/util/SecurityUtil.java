@@ -25,7 +25,6 @@ public class SecurityUtil {
         return Optional.empty();
     }
 
-
     // 현재 인증된 사용자의 권한 반환
     public static String getCurrentUserAuthorities() {
         return getCurrentUserDetails()
@@ -36,7 +35,7 @@ public class SecurityUtil {
     }
 
 
-    // 현재 인증된 사용자의 username(userSeq) 반환
+    // 현재 인증된 사용자의 userSeq 반환
     public static Long getCurrentUserSeq() {
         return getCurrentUserDetails()
                 .map(userDetails -> {
@@ -45,6 +44,7 @@ public class SecurityUtil {
                         return Long.parseLong(userDetails.getUsername());
                     } catch (NumberFormatException e) {
                         log.error("Invalid userSeq format: {}", userDetails.getUsername(), e);
+
                         return null;  // 숫자 형식이 아닌 경우 null 반환
                     }
                 })

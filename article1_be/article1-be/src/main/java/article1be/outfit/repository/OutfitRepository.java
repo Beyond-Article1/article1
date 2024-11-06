@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface OutfitRepository extends JpaRepository<Outfit, Long> {
 
-    //최고 온도: 19.030000686645508
-    //최저 온도: 14.890000343322754
     // 기존의 카테고리와 날씨 조건으로 옷을 조회하는 메서드
     @Query("SELECT o FROM Outfit o WHERE o.outfitCategory = :category " +
             "AND o.outfitTempMin <= :minTemp AND o.outfitTempMax >= :maxTemp " +

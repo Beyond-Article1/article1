@@ -1,6 +1,6 @@
 <template>
   <div class="map-with-date-view">
-    <h2 class="title">추천받을 위치와 날짜를 입력해주세요</h2>
+    <h2 class="list-title">추천받을 위치와 날짜를 입력해주세요</h2>
     <div class="content-container">
       <KakaoMap class="square-component" />
       <DatePicker class="square-component" />
@@ -37,7 +37,7 @@ export default {
   background-size: cover;
 }
 
-.title {
+.list-title {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 20px;

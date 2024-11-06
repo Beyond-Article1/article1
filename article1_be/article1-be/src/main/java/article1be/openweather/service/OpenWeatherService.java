@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -274,7 +275,7 @@ public class OpenWeatherService {
      */
     public ResponseMainWeatherDTO getMainWeatherData(String inputTime, String lat, String lon) throws UnsupportedEncodingException {
         // 입력 받은 시간을 LocalDateTime으로 변경
-        LocalDateTime inputLocalDateTime = DateTimeUtil.stringParseToLocalDateTime(inputTime);
+        LocalDateTime inputLocalDateTime = LocalDateTime.parse(inputTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         // 다음날 00시 계산
         LocalDateTime tomorrowTime = getTomorrowTime(inputLocalDateTime);

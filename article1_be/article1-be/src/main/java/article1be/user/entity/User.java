@@ -1,5 +1,6 @@
 package article1be.user.entity;
 
+import article1be.admin.dto.AdminDTO;
 import article1be.outfit.entity.Style;
 import article1be.user.dto.UserDataDTO;
 import jakarta.persistence.*;
@@ -13,8 +14,8 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "USER")
-@Data
+@Table(name = "user")
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE user SET user_state = 'DELETE', del_date = LOCALTIME WHERE user_seq = ?")
 public class User {
@@ -22,7 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_seq")
-    private Long userSeq;                       // 회원번호
+    private Long userSeq;                       // 회원 번호
 
     @ManyToOne
     @JoinColumn(name = "style_seq", nullable = true)
@@ -34,10 +35,10 @@ public class User {
 
     @Column(name = "user_social_site")
     @Enumerated(EnumType.STRING)
-    private UserSocialSite userSocialSite;      // 소셜사이트 (KAKAO, NAVER, GOOGLE)
+    private UserSocialSite userSocialSite;      // 소셜 사이트 (KAKAO, NAVER, GOOGLE)
 
     @Column(name = "user_id", unique = true, nullable = false)
-    private String userId;                      // 아이디(계정 이메일)
+    private String userId;                      // 아이디 (계정 이메일)
 
     @Column(name = "user_name", nullable = false)
     private String userName;                    // 이름
@@ -46,52 +47,51 @@ public class User {
     private String userNickname;                // 닉네임
 
     @Column(name = "user_phone_num")
-    private String userPhoneNum;                // 휴대폰 번호
+    private String userPhoneNum;                // 휴대 전화 번호
 
     @Column(name = "user_birth_date")
     private LocalDate userBirthDate;            // 생년월일
 
     @Column(name = "user_gender")
     @Enumerated(EnumType.STRING)
-    private UserGender userGender;              // 성별 Enum (MALE, FEMALE)
+    private UserGender userGender;              // 성별 (MALE, FEMALE)
 
     @Column(name = "user_state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserState userState = UserState.ACTIVE;                // 상태 Enum (ACTIVE, BAN, DELETE)
+    private UserState userState = UserState.ACTIVE;                // 상태 (ACTIVE, BAN, DELETE)
 
     @CreatedDate
     @Column(name = "reg_date", nullable = false)
     private LocalDateTime regDate;              // 가입 일자
 
     @Column(name = "del_date")
-    private LocalDateTime delDate;              // 탈퇴일자
+    private LocalDateTime delDate;              // 탈퇴 일자
 
     @Column(name = "user_auth")
     @Enumerated(EnumType.STRING)
-    private UserAuth userAuth = UserAuth.USER;                  // 권한 Enum (USER, ADMIN)
-
+    private UserAuth userAuth = UserAuth.USER;                  // 권한 (USER, ADMIN)
 
     @Builder
-    public User(UserSocialSite socialSite, String id, String name, String phoneNum, LocalDate birthDate,
-                UserGender gender, UserState state, UserAuth userAuth) {
-        this.userSocialSite = socialSite;
-        this.userId = id;
-        this.userName = name;
-        this.userPhoneNum = phoneNum;
-        this.userBirthDate = birthDate;
-        this.userGender = gender;
-        this.userState = state;
+    public User(UserSocialSite userSocialSite, String userId, String userName, String userPhoneNum, LocalDate userBirthDate,
+                UserGender userGender, UserState userState, UserAuth userAuth) {
+        this.userSocialSite = userSocialSite;
+        this.userId = userId;
+        this.userName = userName;
+        this.userPhoneNum = userPhoneNum;
+        this.userBirthDate = userBirthDate;
+        this.userGender = userGender;
+        this.userState = userState;
         this.userAuth = userAuth;
     }
 
-    // 회원가입 시 닉네임, 선호도 등록
+    // 회원가입 시, 닉네임, 선호도 등록
     public void createUserData(UserDataDTO userData, Style style, Condition condition) {
         this.userNickname = userData.getUserNickname();
         this.style = style;             // style 객체 직접 설정
         this.condition = condition;     // condition 객체 직접 설정
     }
 
-    // 회원정보(닉네임) 수정
+    // 회원 정보 (닉네임) 수정
     public void updateUser(String newNickname) {
         this.userNickname = newNickname;
     }
@@ -100,5 +100,11 @@ public class User {
     public void updateUserPrefer(Style style, Condition condition) {
         this.style = style;
         this.condition = condition;
+    }
+
+    public void AdminUserInfo(String userNickname, UserState userState, UserAuth userAuth) {
+        this.userNickname = userNickname;
+        this.userState = userState;
+        this.userAuth = userAuth;
     }
 }

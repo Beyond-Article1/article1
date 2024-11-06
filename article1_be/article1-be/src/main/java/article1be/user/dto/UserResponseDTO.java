@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
 public class UserResponseDTO {
 
     private Long userSeq;                   // 회원 번호
-    private UserSocialSite userSocialSite;  // 소셜로그인 사이트
-    private String userId;                  // 계정(이메일)
+    private UserSocialSite userSocialSite;  // 소셜 로그인 사이트
+    private String userId;                  // 계정 (이메일)
     private String userName;                // 이름
     private String userNickname;            // 닉네임
-    private String userPhoneNum;            // 핸드폰번호
+    private String userPhoneNum;            // 휴대 전화 번호
     private LocalDate userBirthDate;        // 생년월일
     private UserGender userGender;          // 성별
-    private LocalDateTime regDate;          // 가입일자
+    private LocalDateTime regDate;          // 가입 일자
 
 }
