@@ -1,12 +1,14 @@
 <script setup>
 import Header from "@/components/Header.vue";
+import WeatherTab from "@/components/WeatherTab.vue";
 </script>
 
 <template>
-  <Header />
-  <div id="app">
-    <RouterView key="$route.fullPath"/>
-  </div>
+<!--  <Header />-->
+  <WeatherTab/>
+<!--  <div id="app">-->
+<!--    <RouterView key="$route.fullPath"/>-->
+<!--  </div>-->
 </template>
 
 <style>
