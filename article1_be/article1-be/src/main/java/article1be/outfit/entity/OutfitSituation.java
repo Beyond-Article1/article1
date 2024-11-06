@@ -17,11 +17,11 @@ public class OutfitSituation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long outfitSituationSeq;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "outfit_seq", nullable = false)
     private Outfit outfit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "situation_seq", nullable = false)
     private Situation situation;
 
