@@ -274,9 +274,10 @@ public class OpenWeatherService {
      * 지정시간 ~ 다음날 00시까지의 데이터 조회 서비스 (날씨코드, 온도, 체감온도, 날씨아이콘, 미세먼지 농도, 초미세먼지 농도, 지정시간 ~ 다음날 00시까지의 (최저기온, 최고기온)
      */
     public ResponseMainWeatherDTO getMainWeatherData(String inputTime, String lat, String lon) throws UnsupportedEncodingException {
-        // 입력 받은 시간을 LocalDateTime으로 변경
-        LocalDateTime inputLocalDateTime = LocalDateTime.parse(inputTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
+        // 입력 받은 시간을 LocalDateTime으로 변경
+        LocalDateTime inputLocalDateTime = DateTimeUtil.stringParseToLocalDateTime(inputTime);
+        //
         // 다음날 00시 계산
         LocalDateTime tomorrowTime = getTomorrowTime(inputLocalDateTime);
 
@@ -307,6 +308,7 @@ public class OpenWeatherService {
         // 지정시간에 가장 가까운 (날씨코드, 아이콘, 온도, 체감온도) 기입
         responseMainWeatherDTO.setNowWeatherCode(weatherListDTOS.get(0).getWeather().get(0).getId());
         responseMainWeatherDTO.setNowWeatherIcon(weatherListDTOS.get(0).getWeather().get(0).getIcon());
+        responseMainWeatherDTO.setNowWeatherDescription(weatherListDTOS.get(0).getWeather().get(0).getDescription());
         responseMainWeatherDTO.setNowTemp(weatherListDTOS.get(0).getMain().getTemp());
         responseMainWeatherDTO.setNowFeelsLike(weatherListDTOS.get(0).getMain().getFeels_like());
 
