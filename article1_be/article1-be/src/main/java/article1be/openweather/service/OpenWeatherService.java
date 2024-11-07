@@ -261,9 +261,7 @@ public class OpenWeatherService {
                 .max(Map.Entry.comparingByValue())          // 가장 많이 나온 값 찾기
                 .map(Map.Entry::getKey)                     // 값의 키 꺼내기
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_AIR_DATA));      // 없을 시에 예외 처리
-
-        log.info("max aqi {}", aqi);
-
+        
         responseAppointDTO.setAqi(aqi);
 
         return responseAppointDTO;
@@ -298,15 +296,10 @@ public class OpenWeatherService {
 
             // 남은 시간 (3으로 나눠을때 반내림이 되면 excludeCnt -1)
             float leftTime = (inputLocalDateTime.getHour() + inputLocalDateTime.getMinute() / 60.0f) / 3;
-            log.info("leftTime {}", leftTime);
-            log.info("timeDiff {}", timeDiff);
+
             // 지정시간이 현재시간보다 1시간 이내, 다음 데이터시간보다 1시간 이상일때는 현재시간으로 조회
             if (Duration.between(nowTime, inputLocalDateTime).toHours() <= 1 && Duration.between(inputLocalDateTime, dataDate).toHours() >= 1){
                 checkDate = true;
-            } else if (excludeCnt >= 1 && leftTime - timeDiff <= 0.5){
-                // 반내림이 되고, 입력시간이 현재시간보다 3시간 이후라면
-                excludeCnt -= 1;
-                log.info("excludeCnt {}", excludeCnt);
             }
         }
 
@@ -321,7 +314,7 @@ public class OpenWeatherService {
         if (openWeather5DayDTO == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_WEATHER_DATA);
         }
-        log.info("2excludeCnt {}", excludeCnt);
+
         // 전체 데이터 리스트에서 현재 시간 ~ 사용자가 입력한 시간까지 제외하기
         List<WeatherListDTO> weatherListDTOS = openWeather5DayDTO.getList().subList(excludeCnt, openWeather5DayDTO.getList().size());
 
@@ -404,8 +397,6 @@ public class OpenWeatherService {
     private int getCnt(LocalDateTime inputTime, LocalDateTime tomorrowTime) {
         // 현재 시간부터 다음날 00시까지 남은 시간 계산하기 (남은 시간 / 3, 다음날 00시 까지의 개수라서 +1)
         int times = (int) Math.floor(Duration.between(inputTime, tomorrowTime).toHours());
-        log.info("times {} ", times);
-        // 21시 이후 조회시 또는 현재시간과 지정시간 사이에 데이터가 없을 시
 
         return times / 3;
     }
