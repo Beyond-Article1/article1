@@ -4,10 +4,10 @@
     <div class="situation-container">
       <div
           v-for="situation in situations"
-          :key="situation.value"
+          :key="situation.seq"
           class="situation-option"
-          :class="{ selected: selectedSituation === situation.value }"
-          @click="selectSituation(situation.value)"
+          :class="{ selected: selectedSituation === situation.seq }"
+          @click="selectSituation(situation.seq)"
       >
         <img :src="situation.icon" :alt="situation.label" />
         <p>{{ situation.label }}</p>
@@ -28,36 +28,37 @@
   </div>
 </template>
 
-
 <script>
-import { useSelectedInfoStore } from '@/store/selectedInfoStore';
+import { useSelectedInfoStore } from '@/store/selectedInfoStore.js';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const store = useSelectedInfoStore();
+    const router = useRouter();
 
     return {
-      selectedLatitude: store.selectedLatitude,
-      selectedLongitude: store.selectedLongitude,
-      selectedDate: store.selectedDate,
+      store,
+      router,
       selectedSituation: null,
       situations: [
-        { label: "일상", value: "daily", icon: new URL('@/assets/images/situation/routine.png', import.meta.url).href },
-        { label: "여행", value: "travel", icon: new URL('@/assets/images/situation/travel.png', import.meta.url).href },
-        { label: "데이트", value: "date", icon: new URL('@/assets/images/situation/dating.png', import.meta.url).href },
-        { label: "운동", value: "exercise", icon: new URL('@/assets/images/situation/sports.png', import.meta.url).href },
-        { label: "격식있는자리", value: "formal", icon: new URL('@/assets/images/situation/formal.png', import.meta.url).href },
-        { label: "무관", value: "none", icon: new URL('@/assets/images/situation/none.png', import.meta.url).href },
+        { label: "일상", seq: 1, icon: new URL('@/assets/images/situation/routine.png', import.meta.url).href },
+        { label: "여행", seq: 2, icon: new URL('@/assets/images/situation/travel.png', import.meta.url).href },
+        { label: "데이트", seq: 3, icon: new URL('@/assets/images/situation/dating.png', import.meta.url).href },
+        { label: "운동", seq: 4, icon: new URL('@/assets/images/situation/sports.png', import.meta.url).href },
+        { label: "격식있는자리", seq: 5, icon: new URL('@/assets/images/situation/formal.png', import.meta.url).href },
+        { label: "무관", seq: 6, icon: new URL('@/assets/images/situation/none.png', import.meta.url).href },
       ],
     };
   },
   methods: {
-    selectSituation(value) {
-      this.selectedSituation = value;
+    selectSituation(seq) {
+      this.selectedSituation = seq;
     },
     getRecommendation() {
       if (this.selectedSituation) {
-        alert(`위도: ${this.selectedLatitude}, 경도: ${this.selectedLongitude}, 날짜: ${this.selectedDate.toLocaleString()}, 상황: ${this.selectedSituation}`);
+        this.store.selectedSituation = this.selectedSituation; // 상황을 스토어에 저장
+        this.router.push({ name: 'UserOutfitRecommendation' }); // 게스트 복장 추천 페이지로 이동
       } else {
         alert("상황을 선택해 주세요.");
       }

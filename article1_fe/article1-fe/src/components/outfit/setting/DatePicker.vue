@@ -18,7 +18,7 @@
 <script>
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { useSelectedInfoStore } from '@/store/selectedInfoStore';
+import { useSelectedInfoStore } from '@/store/selectedInfoStore.js';
 
 export default {
   components: { Datepicker },

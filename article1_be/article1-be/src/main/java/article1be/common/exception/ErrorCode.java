@@ -14,6 +14,8 @@ public enum ErrorCode {
     // 사용자 (User)
     NEED_LOGIN(HttpStatus.BAD_REQUEST, "로그인이 필요한 서비스입니다."),
 
+    INVALID_SELECT_SEQ(HttpStatus.BAD_REQUEST, "유효하지 않은 선택 번호입니다."),
+
 
     /**
      * == 401 UNAUTHORIZED ==

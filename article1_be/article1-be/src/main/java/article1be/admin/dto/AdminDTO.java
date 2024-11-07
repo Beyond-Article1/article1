@@ -23,6 +23,7 @@ public class AdminDTO {
         private LocalDate userBirthDate;
         private UserGender userGender;
         private UserState userState;
+
     }
 
     @Data

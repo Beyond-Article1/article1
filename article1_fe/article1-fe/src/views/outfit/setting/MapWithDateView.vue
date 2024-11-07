@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import KakaoMap from "@/components/location/KakaoMap.vue";
-import DatePicker from "@/components/location/DatePicker.vue";
+import KakaoMap from "@/components/outfit/setting/kakaoMap.vue";
+import DatePicker from "@/components/outfit/setting/DatePicker.vue";
 
 export default {
   components: {

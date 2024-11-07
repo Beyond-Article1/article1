@@ -1,5 +1,6 @@
 package article1be.review.service;
 
+import article1be.outfit.repository.SelectRecordRepository;
 import article1be.review.entity.Review;
 import article1be.review.dto.ReviewDTO;
 import article1be.review.repository.ReviewRepository;
@@ -21,6 +22,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final SelectRecordRepository selectRecordRepository;
 
     public List<ReviewDTO> getAllReviews() {
         return reviewRepository.findAll().stream()
@@ -36,7 +38,10 @@ public class ReviewService {
                             review.getReviewLocation(),
                             review.getReviewWeather(),
                             review.getReviewContent(),
-                            review.getReviewBlind() ? "BLIND" : "ACTIVE"
+                            review.getReviewBlind() ? "BLIND" : "ACTIVE",
+                            review.getReviewLikeYn(),
+                            review.getReviewBlind(),
+                            review.getRegDate()
                     );
                 })
                 .collect(Collectors.toList());
@@ -56,13 +61,20 @@ public class ReviewService {
                         review.getReviewLocation(),
                         review.getReviewWeather(),
                         review.getReviewContent(),
-                        review.getReviewBlind() ? "BLIND" : "ACTIVE"
+                        review.getReviewBlind() ? "BLIND" : "ACTIVE",
+                        review.getReviewLikeYn(),
+                        review.getReviewBlind(),
+                        review.getRegDate()
                 ))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public ReviewDTO createReview(ReviewDTO reviewDto) {
+        if (!selectRecordRepository.existsById(reviewDto.getSelectSeq())) {
+            throw new CustomException(ErrorCode.INVALID_SELECT_SEQ);
+        }
+
         Review review = new Review(
                 reviewDto.getUserSeq(),
                 reviewDto.getSelectSeq(),
@@ -86,7 +98,10 @@ public class ReviewService {
                 review.getReviewLocation(),
                 review.getReviewWeather(),
                 review.getReviewContent(),
-                review.getReviewBlind() ? "BLIND" : "ACTIVE"
+                review.getReviewBlind() ? "BLIND" : "ACTIVE",
+                review.getReviewLikeYn(),
+                review.getReviewBlind(),
+                review.getRegDate()
         );
     }
 
@@ -102,7 +117,6 @@ public class ReviewService {
                 "BLIND".equals(reviewDto.getReviewStatus()),
                 review.getReviewLikeYn()
         );
-        reviewRepository.save(review);
 
         String userNickname = userRepository.findById(review.getUserSeq())
                 .map(user -> user.getUserNickname())
@@ -116,7 +130,10 @@ public class ReviewService {
                 review.getReviewLocation(),
                 review.getReviewWeather(),
                 review.getReviewContent(),
-                review.getReviewBlind() ? "BLIND" : "ACTIVE"
+                review.getReviewBlind() ? "BLIND" : "ACTIVE",
+                review.getReviewLikeYn(),
+                review.getReviewBlind(),
+                review.getRegDate()
         );
     }
 

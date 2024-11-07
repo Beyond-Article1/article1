@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { useSelectedInfoStore } from '@/store/selectedInfoStore';
+import { useSelectedInfoStore } from '@/store/selectedInfoStore.js';
 
 export default {
   name: "KakaoMap",
@@ -97,8 +97,7 @@ export default {
         const latlng = mouseEvent.latLng;
         this.locationSelected = true;
         const store = useSelectedInfoStore();
-        store.selectedLatitude = latlng.getLat();
-        store.selectedLongitude = latlng.getLng();
+        store.setLocation(latlng.getLat(), latlng.getLng()); // 선택된 위치를 스토어에 저장
       });
     },
     searchPlaces() {
@@ -147,12 +146,12 @@ export default {
 
       this.locationSelected = true;
       const store = useSelectedInfoStore();
-      store.selectedLatitude = place.y;
-      store.selectedLongitude = place.x;
+      store.setLocation(place.y, place.x); // 장소 검색 결과로 선택된 위치를 스토어에 저장
     },
   },
 };
 </script>
+
 
 <style scoped>
 .map-container {
