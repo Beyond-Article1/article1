@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -272,27 +273,54 @@ public class OpenWeatherService {
      */
     public ResponseMainWeatherDTO getMainWeatherData(LocalDateTime inputLocalDateTime, String lat, String lon) throws UnsupportedEncodingException {
 
-        // 입력 받은 시간을 LocalDateTime으로 변경
-//        LocalDateTime inputLocalDateTime = DateTimeUtil.stringParseToLocalDateTime(inputTime);
-
         // 다음날 00시 계산
         LocalDateTime tomorrowTime = getTomorrowTime(inputLocalDateTime);
 
+        log.info("tomorrowTime : {}", tomorrowTime);
         // 현재 시간
         LocalDateTime nowTime = LocalDateTime.now();
 
-        // 현재시간 ~ 사용자가 입력한 시간까지의 데이터 개수 (+1이 추가되어 반환된다 따라서 -1)
-        int excludeCnt = getCnt(nowTime, inputLocalDateTime);
+        // 가장 가까운 3시간 단위 시간 계산
+        LocalDateTime nearestDataTime = getNearestDataTime(inputLocalDateTime);
 
-        // 현재시간인지, 최근 데이터인지 검증 변수
+        log.info("Nearest Data Time : {}", nearestDataTime);
+
+        log.info("nowTime : {}", nowTime);
+        // 현재시간 ~ 사용자가 입력한 시간까지의 데이터 개수
+        int excludeCnt = getCnt(nowTime, nearestDataTime);
+//        excludeCnt = excludeCnt == 0 ? 0 : excludeCnt + 1;
+
+        log.info("excludeCnt : {}", excludeCnt);        // 현재시간인지, 최근 데이터인지 검증 변수
         boolean checkDate = false;
 
         // 지정시간과 요청시간의 차이가 얼마 나지 않으면 현재 시간을 호출 (&& 3시간단위로 있는 다음 데이터시간과 1시간 이상 차이 나야함)
         int timeDiff = inputLocalDateTime.getHour() / 3;    // 3시간 단위가 아니라면
         if (timeDiff != 0){
 
+            log.info("timeDiff {}", timeDiff);
+
             // 다음 데이터가 있는 시간
-            LocalDateTime dataDate = inputLocalDateTime.withHour((timeDiff + 1) * 3).withMinute(0).withSecond(0).withNano(0);
+            // (timeDiff + 1) * 3이 24일 경우 다음날로 설정
+            LocalDateTime dataDate;
+            if ((timeDiff + 1) * 3 == 24) {
+
+                dataDate = inputLocalDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+                // 만약 날짜가 해당 월의 마지막 날을 넘는다면, 다음 달의 1일로 설정
+                if (dataDate.getDayOfMonth() == 1 && dataDate.get(ChronoField.DAY_OF_MONTH) == 1) {
+                    dataDate = dataDate.plusMonths(1).withDayOfMonth(1);
+                }
+
+                // 만약 월이 12를 초과하면, 연도를 +1년 하고 1월로 설정
+                if (dataDate.getMonthValue() == 1 && dataDate.get(ChronoField.MONTH_OF_YEAR) == 1) {
+                    dataDate = dataDate.plusYears(1).withMonth(1).withDayOfMonth(1);
+                }
+
+            } else {
+
+                 dataDate = inputLocalDateTime.withHour((timeDiff + 1) * 3).withMinute(0).withSecond(0).withNano(0);
+                log.info("dataDate : {}", dataDate);        // 현재시간인지, 최근 데이터인지 검증 변수
+            }
 
             // 남은 시간 (3으로 나눠을때 반내림이 되면 excludeCnt -1)
             float leftTime = (inputLocalDateTime.getHour() + inputLocalDateTime.getMinute() / 60.0f) / 3;
@@ -306,6 +334,7 @@ public class OpenWeatherService {
         // 현재시간 ~ 사용자가 입력한 시간의 다음날 00시까지의 데이터 개수
         // 현재 시간부터 다음날 00시까지 남은 시간 계산하기 (남은 시간 / 3, 다음날 00시 까지의 개수라서 +1)
         int cnt = getCnt(nowTime, tomorrowTime) + 1;
+        log.info("cnt : {}", cnt);        // 현재시간인지, 최근 데이터인지 검증 변수
 
         // 미래 데이터 가져오기
         OpenWeather5DayDTO openWeather5DayDTO = get5DayWeatherData(lat, lon, cnt);
@@ -392,13 +421,50 @@ public class OpenWeatherService {
     }
 
     /**
-     * 지정 시간 ~ 다음날 00시 까지의 갯수 구하기
+     * 불러올 데이터 양 = (지정시간 ~ 다음날 00시) - (현재시간 - 지정시간)
+     * 현재 시간 ~ 지정 시간 까지의 데이터 갯수 구하기
+     * 지정 시간 ~ 다음날 00시 까지의 데이터 갯수 구하기
      */
-    private int getCnt(LocalDateTime inputTime, LocalDateTime tomorrowTime) {
-        // 현재 시간부터 다음날 00시까지 남은 시간 계산하기 (남은 시간 / 3, 다음날 00시 까지의 개수라서 +1)
-        int times = (int) Math.floor(Duration.between(inputTime, tomorrowTime).toHours());
-
-        return times / 3;
+    private int getCnt(LocalDateTime nowTime, LocalDateTime inputLocalDateTime) {
+        long hoursUntilInputTime = Duration.between(nowTime, inputLocalDateTime).toHours();
+        return (int) (hoursUntilInputTime / 3);
     }
 
+    private LocalDateTime getNearestDataTime(LocalDateTime inputLocalDateTime) {
+        int hour = inputLocalDateTime.getHour();
+        int minute = inputLocalDateTime.getMinute();
+
+        // 현재 시간을 3시간 단위로 나눈 몫으로 이전 3시간 단위 계산
+        int baseHour = (hour / 3) * 3;
+
+        // 현재 시간의 분이 30분 이상이면 다음 3시간 단위로 반올림
+        if (hour % 3 >= 1 && minute >= 30) {
+            baseHour += 3;
+        }
+
+        // (timeDiff + 1) * 3이 24일 경우 다음날로 설정
+        LocalDateTime dataDate;
+        if (baseHour == 24) {
+
+            dataDate = inputLocalDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+            // 만약 날짜가 해당 월의 마지막 날을 넘는다면, 다음 달의 1일로 설정
+            if (dataDate.getDayOfMonth() == 1 && dataDate.get(ChronoField.DAY_OF_MONTH) == 1) {
+                dataDate = dataDate.plusMonths(1).withDayOfMonth(1);
+            }
+
+            // 만약 월이 12를 초과하면, 연도를 +1년 하고 1월로 설정
+            if (dataDate.getMonthValue() == 1 && dataDate.get(ChronoField.MONTH_OF_YEAR) == 1) {
+                dataDate = dataDate.plusYears(1).withMonth(1).withDayOfMonth(1);
+            }
+
+        } else {
+
+            dataDate = inputLocalDateTime.withHour(baseHour).withMinute(0).withSecond(0).withNano(0);
+            log.info("dataDate : {}", dataDate);        // 현재시간인지, 최근 데이터인지 검증 변수
+        }
+
+        // 반올림된 시간을 기준으로 새로운 LocalDateTime 생성
+        return dataDate;
+    }
 }

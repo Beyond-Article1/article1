@@ -1,5 +1,5 @@
 // store/selectedInfoStore.js
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 
 export const useSelectedInfoStore = defineStore('selectedInfoStore', {
     state: () => ({

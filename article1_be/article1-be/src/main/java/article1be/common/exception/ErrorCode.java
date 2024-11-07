@@ -16,6 +16,8 @@ public enum ErrorCode {
 
     INVALID_SELECT_SEQ(HttpStatus.BAD_REQUEST, "유효하지 않은 선택 번호입니다."),
 
+    // 시간관련
+    NEED_AFTER_TIME(HttpStatus.BAD_REQUEST, "현재 시간 이후로만 설정이 가능합니다."),
 
     /**
      * == 401 UNAUTHORIZED ==

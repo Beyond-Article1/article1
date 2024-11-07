@@ -13,21 +13,36 @@ DROP TABLE IF EXISTS OUTFIT;
 DROP TABLE IF EXISTS SITUATION;
 DROP TABLE IF EXISTS STYLE;
 DROP TABLE IF EXISTS `CONDITION`;
+DROP TABLE IF EXISTS blame;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS reply;
+DROP TABLE IF EXISTS picture;
+DROP TABLE IF EXISTS select_outfit;
+DROP TABLE IF EXISTS outfit_style;
+DROP TABLE IF EXISTS outfit_situation;
+DROP TABLE IF EXISTS select_record;
+DROP TABLE IF EXISTS board;
+DROP TABLE IF EXISTS ban;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS outfit;
+DROP TABLE IF EXISTS situation;
+DROP TABLE IF EXISTS style;
+DROP TABLE IF EXISTS `condition`;
 
 -- 부모 테이블부터 생성
-CREATE TABLE STYLE (
+CREATE TABLE style (
                        style_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                        style_name VARCHAR(50) NOT NULL COMMENT '캐주얼, 포멀, 스포티, 무관',
                        PRIMARY KEY (style_seq)
 );
 
-CREATE TABLE `CONDITION` (
+CREATE TABLE `condition` (
                              condition_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                              condition_name VARCHAR(50) NOT NULL COMMENT 'HOT, COLD, NORMAL',
                              PRIMARY KEY (condition_seq)
 );
 
-CREATE TABLE USER (
+CREATE TABLE user (
                       user_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                       user_social_site VARCHAR(50) NOT NULL COMMENT 'KAKAO, NAVER, GOOGLE',
                       user_id VARCHAR(255) NOT NULL,
@@ -45,7 +60,7 @@ CREATE TABLE USER (
                       PRIMARY KEY (user_seq)
 );
 
-CREATE TABLE OUTFIT (
+CREATE TABLE outfit (
                         outfit_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                         outfit_name VARCHAR(50) NOT NULL,
                         outfit_weather INT NULL COMMENT '악세서리만',
@@ -58,14 +73,14 @@ CREATE TABLE OUTFIT (
                         PRIMARY KEY (outfit_seq)
 );
 
-CREATE TABLE SITUATION (
+CREATE TABLE situation (
                            situation_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                            situation_name VARCHAR(50) NOT NULL COMMENT '일상, 여행, 운동, 데이트, 격식있는자리',
                            PRIMARY KEY (situation_seq)
 );
 
 -- 자식 테이블 생성
-CREATE TABLE SELECT_RECORD (
+CREATE TABLE select_record (
                                select_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                                user_seq BIGINT NOT NULL,
                                situation_seq BIGINT NOT NULL,
@@ -81,7 +96,7 @@ CREATE TABLE SELECT_RECORD (
                                PRIMARY KEY (select_seq)
 );
 
-CREATE TABLE BOARD (
+CREATE TABLE board (
                        board_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                        user_seq BIGINT NOT NULL,
                        board_title VARCHAR(50) NOT NULL,
@@ -94,7 +109,7 @@ CREATE TABLE BOARD (
                        PRIMARY KEY (board_seq)
 );
 
-CREATE TABLE REVIEW (
+CREATE TABLE review (
                         review_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                         user_seq BIGINT NOT NULL,
                         select_seq BIGINT NOT NULL,
@@ -110,7 +125,7 @@ CREATE TABLE REVIEW (
                         PRIMARY KEY (review_seq, user_seq)
 );
 
-CREATE TABLE REPLY (
+CREATE TABLE reply (
                        reply_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                        board_seq BIGINT NOT NULL,
                        reply_user_seq BIGINT NOT NULL,
@@ -121,7 +136,7 @@ CREATE TABLE REPLY (
                        PRIMARY KEY (reply_seq)
 );
 
-CREATE TABLE PICTURE (
+CREATE TABLE picture (
                          picture_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                          picture_board_seq BIGINT NOT NULL,
                          picture_originename VARCHAR(255) NOT NULL,
@@ -134,28 +149,28 @@ CREATE TABLE PICTURE (
                          PRIMARY KEY (picture_seq)
 );
 
-CREATE TABLE SELECT_OUTFIT (
+CREATE TABLE select_outfit (
                                select_outfit_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                                outfit_seq BIGINT NOT NULL,
                                select_seq BIGINT NOT NULL,
                                PRIMARY KEY (select_outfit_seq)
 );
 
-CREATE TABLE OUTFIT_STYLE (
+CREATE TABLE outfit_style (
                               select_style_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                               style_seq BIGINT NOT NULL,
                               outfit_seq BIGINT NOT NULL,
                               PRIMARY KEY (select_style_seq)
 );
 
-CREATE TABLE OUTFIT_SITUATION (
+CREATE TABLE outfit_situation (
                                   outfit_situation_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                                   outfit_seq BIGINT NOT NULL,
                                   situation_seq BIGINT NOT NULL,
                                   PRIMARY KEY (outfit_situation_seq)
 );
 
-CREATE TABLE BAN (
+CREATE TABLE ban (
                      ban_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                      ban_user_seq BIGINT NOT NULL,
                      ban_startdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -164,7 +179,7 @@ CREATE TABLE BAN (
                      PRIMARY KEY (ban_seq)
 );
 
-CREATE TABLE BLAME (
+CREATE TABLE blame (
                        blame_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                        blame_user_seq BIGINT NOT NULL,
                        blame_board_seq BIGINT NULL,
@@ -176,46 +191,46 @@ CREATE TABLE BLAME (
                        up_date DATETIME NULL,
                        blame_status BOOLEAN NOT NULL DEFAULT TRUE COMMENT '처리 상태 (TRUE: 미처리, FALSE: 처리됨)',
                        PRIMARY KEY (blame_seq),
-                       CONSTRAINT FK_blame_user FOREIGN KEY (blame_user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE,
-                       CONSTRAINT FK_blame_board FOREIGN KEY (blame_board_seq) REFERENCES BOARD (board_seq) ON DELETE CASCADE,
-                       CONSTRAINT FK_blame_reply FOREIGN KEY (blame_reply_seq) REFERENCES REPLY (reply_seq) ON DELETE CASCADE,
-                       CONSTRAINT FK_blame_review FOREIGN KEY (blame_review_seq, user_seq) REFERENCES REVIEW (review_seq, user_seq) ON DELETE CASCADE
+                       CONSTRAINT FK_blame_user FOREIGN KEY (blame_user_seq) REFERENCES user (user_seq) ON DELETE CASCADE,
+                       CONSTRAINT FK_blame_board FOREIGN KEY (blame_board_seq) REFERENCES board (board_seq) ON DELETE CASCADE,
+                       CONSTRAINT FK_blame_reply FOREIGN KEY (blame_reply_seq) REFERENCES reply (reply_seq) ON DELETE CASCADE,
+                       CONSTRAINT FK_blame_review FOREIGN KEY (blame_review_seq, user_seq) REFERENCES review (review_seq, user_seq) ON DELETE CASCADE
 );
 
 -- 외래 키 제약 조건 추가 (ON DELETE CASCADE 적용)
-ALTER TABLE USER
-    ADD CONSTRAINT FK_user_style FOREIGN KEY (style_seq) REFERENCES STYLE (style_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_user_condition FOREIGN KEY (condition_seq) REFERENCES `CONDITION` (condition_seq) ON DELETE CASCADE;
+ALTER TABLE user
+    ADD CONSTRAINT FK_user_style FOREIGN KEY (style_seq) REFERENCES style (style_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_user_condition FOREIGN KEY (condition_seq) REFERENCES `condition` (condition_seq) ON DELETE CASCADE;
 
-ALTER TABLE SELECT_RECORD
-    ADD CONSTRAINT FK_select_record_user FOREIGN KEY (user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_select_record_situation FOREIGN KEY (situation_seq) REFERENCES SITUATION (situation_seq) ON DELETE CASCADE;
+ALTER TABLE select_record
+    ADD CONSTRAINT FK_select_record_user FOREIGN KEY (user_seq) REFERENCES user (user_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_select_record_situation FOREIGN KEY (situation_seq) REFERENCES situation (situation_seq) ON DELETE CASCADE;
 
-ALTER TABLE BOARD
-    ADD CONSTRAINT FK_board_user FOREIGN KEY (user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE;
+ALTER TABLE board
+    ADD CONSTRAINT FK_board_user FOREIGN KEY (user_seq) REFERENCES user (user_seq) ON DELETE CASCADE;
 
-ALTER TABLE REVIEW
-    ADD CONSTRAINT FK_review_user FOREIGN KEY (user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_review_select_record FOREIGN KEY (select_seq) REFERENCES SELECT_RECORD (select_seq) ON DELETE CASCADE;
+ALTER TABLE review
+    ADD CONSTRAINT FK_review_user FOREIGN KEY (user_seq) REFERENCES user (user_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_review_select_record FOREIGN KEY (select_seq) REFERENCES select_record (select_seq) ON DELETE CASCADE;
 
-ALTER TABLE REPLY
-    ADD CONSTRAINT FK_reply_board FOREIGN KEY (board_seq) REFERENCES BOARD (board_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_reply_user FOREIGN KEY (reply_user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE;
+ALTER TABLE reply
+    ADD CONSTRAINT FK_reply_board FOREIGN KEY (board_seq) REFERENCES board (board_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_reply_user FOREIGN KEY (reply_user_seq) REFERENCES user (user_seq) ON DELETE CASCADE;
 
-ALTER TABLE PICTURE
-    ADD CONSTRAINT FK_picture_board FOREIGN KEY (picture_board_seq) REFERENCES BOARD (board_seq) ON DELETE CASCADE;
+ALTER TABLE picture
+    ADD CONSTRAINT FK_picture_board FOREIGN KEY (picture_board_seq) REFERENCES board (board_seq) ON DELETE CASCADE;
 
-ALTER TABLE SELECT_OUTFIT
-    ADD CONSTRAINT FK_select_outfit_outfit FOREIGN KEY (outfit_seq) REFERENCES OUTFIT (outfit_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_select_outfit_select_record FOREIGN KEY (select_seq) REFERENCES SELECT_RECORD (select_seq) ON DELETE CASCADE;
+ALTER TABLE select_outfit
+    ADD CONSTRAINT FK_select_outfit_outfit FOREIGN KEY (outfit_seq) REFERENCES outfit (outfit_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_select_outfit_select_record FOREIGN KEY (select_seq) REFERENCES select_record (select_seq) ON DELETE CASCADE;
 
-ALTER TABLE OUTFIT_STYLE
-    ADD CONSTRAINT FK_outfit_style_style FOREIGN KEY (style_seq) REFERENCES STYLE (style_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_outfit_style_outfit FOREIGN KEY (outfit_seq) REFERENCES OUTFIT (outfit_seq) ON DELETE CASCADE;
+ALTER TABLE outfit_style
+    ADD CONSTRAINT FK_outfit_style_style FOREIGN KEY (style_seq) REFERENCES style (style_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_outfit_style_outfit FOREIGN KEY (outfit_seq) REFERENCES outfit (outfit_seq) ON DELETE CASCADE;
 
-ALTER TABLE OUTFIT_SITUATION
-    ADD CONSTRAINT FK_outfit_situation_outfit FOREIGN KEY (outfit_seq) REFERENCES OUTFIT (outfit_seq) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_outfit_situation_situation FOREIGN KEY (situation_seq) REFERENCES SITUATION (situation_seq) ON DELETE CASCADE;
+ALTER TABLE outfit_situation
+    ADD CONSTRAINT FK_outfit_situation_outfit FOREIGN KEY (outfit_seq) REFERENCES outfit (outfit_seq) ON DELETE CASCADE,
+    ADD CONSTRAINT FK_outfit_situation_situation FOREIGN KEY (situation_seq) REFERENCES situation (situation_seq) ON DELETE CASCADE;
 
-ALTER TABLE BAN
-    ADD CONSTRAINT FK_ban_user FOREIGN KEY (ban_user_seq) REFERENCES USER (user_seq) ON DELETE CASCADE;
+ALTER TABLE ban
+    ADD CONSTRAINT FK_ban_user FOREIGN KEY (ban_user_seq) REFERENCES user (user_seq) ON DELETE CASCADE;

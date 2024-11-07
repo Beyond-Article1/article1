@@ -8,6 +8,6 @@ export default [
     },
     {
         path: '/weather-component',
-        component: WeatherTab
-    }
+        component: WeatherTab   // 테스트로 띄우는 weather-component 주소
+    },
 ];

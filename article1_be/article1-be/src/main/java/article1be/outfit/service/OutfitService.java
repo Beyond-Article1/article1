@@ -1,7 +1,9 @@
 package article1be.outfit.service;
 
+import article1be.common.exception.CustomException;
+import article1be.common.exception.ErrorCode;
+import article1be.common.utils.DateTimeUtil;
 import article1be.openweather.dto.response.ResponseMainWeatherDTO;
-import article1be.openweather.dto.response.ResponseTodayDTO;
 import article1be.openweather.service.OpenWeatherService;
 import article1be.outfit.dto.OutfitRequestDTO;
 import article1be.outfit.dto.OutfitResponseDTO;
@@ -13,7 +15,6 @@ import article1be.outfit.repository.OutfitRepository;
 import article1be.outfit.repository.OutfitSituationRepository;
 import article1be.outfit.repository.OutfitStyleRepository;
 import article1be.outfit.repository.SelectOutfitRepository;
-import article1be.security.util.SecurityUtil;
 import article1be.user.entity.Condition;
 import article1be.user.entity.User;
 import article1be.user.entity.UserGender;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +45,14 @@ public class OutfitService {
         User user = userRepository.findById(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-//        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+        log.info(requestDTO.getRequestedAt().toString());
         LocalDateTime requestedAt = requestDTO.getRequestedAt();
+
+        // 현재 이전 시간을 선택시 예외처리
+        if (requestedAt.isBefore(LocalDateTime.now().minusMinutes(10))){
+            log.info("현재 이전 시간을 선택 - 현재시간: " + LocalDateTime.now() + ", 선택시간: " + requestedAt);
+            throw new CustomException(ErrorCode.NEED_AFTER_TIME);
+        }
 
         ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
                 requestedAt,
@@ -113,8 +119,12 @@ public class OutfitService {
 
     public Map<OutfitCategory, List<OutfitResponseDTO>> getGuestRecommendedOutfits(OutfitRequestDTO requestDTO) throws UnsupportedEncodingException {
 
-//        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
-        LocalDateTime requestedAt = requestDTO.getRequestedAt();
+        LocalDateTime requestedAt = DateTimeUtil.localDateTimeToLocalDateTime(requestDTO.getRequestedAt());
+
+        // 현재 이전 시간을 선택시 예외처리
+        if (requestedAt.isBefore(LocalDateTime.now())){
+            throw new CustomException(ErrorCode.NEED_AFTER_TIME);
+        }
 
         ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
                 requestedAt,
