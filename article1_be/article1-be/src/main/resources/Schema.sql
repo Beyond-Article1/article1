@@ -12,16 +12,16 @@ DROP TABLE IF EXISTS USER;
 DROP TABLE IF EXISTS OUTFIT;
 DROP TABLE IF EXISTS SITUATION;
 DROP TABLE IF EXISTS STYLE;
-DROP TABLE IF EXISTS `CONDITION`;
+DROP TABLE IF EXISTS `condition`;
 
 -- 부모 테이블부터 생성
 CREATE TABLE STYLE (
                        style_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
-                       style_name VARCHAR(50) NOT NULL COMMENT '캐주얼, 포멀, 스포티, 무관',
+                       style_name VARCHAR(50) NOT NULL COMMENT ', , , 무관',
                        PRIMARY KEY (style_seq)
 );
 
-CREATE TABLE `CONDITION` (
+CREATE TABLE `condition` (
                              condition_seq BIGINT NOT NULL AUTO_INCREMENT COMMENT 'AUTO-INCREMENT',
                              condition_name VARCHAR(50) NOT NULL COMMENT 'HOT, COLD, NORMAL',
                              PRIMARY KEY (condition_seq)
@@ -54,7 +54,6 @@ CREATE TABLE OUTFIT (
                         outfit_category VARCHAR(50) NOT NULL COMMENT '상의, 하의, 아우터, 신발, 악세사리',
                         outfit_gender VARCHAR(50) NOT NULL COMMENT 'M, F, N (남, 여, 무관)',
                         outfit_level VARCHAR(50) NULL COMMENT '권장, 필수, 선택',
-                        outfit_img VARCHAR(500) NOT NULL,
                         PRIMARY KEY (outfit_seq)
 );
 
