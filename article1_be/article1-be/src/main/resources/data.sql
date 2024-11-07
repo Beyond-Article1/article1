@@ -1,4 +1,4 @@
-INSERT INTO outfit (outfit_name, outfit_weather, outfit_temp_max, outfit_temp_min, outfit_category, outfit_gender, outfit_level, outfit_img) VALUES
+INSERT INTO OUTFIT (outfit_name, outfit_weather, outfit_temp_max, outfit_temp_min, outfit_category, outfit_gender, outfit_level, outfit_img) VALUES
 -- 상의
 ('맨투맨', NULL, 20, -100, 'TOP', 'N', NULL, 'example.com/image1.jpg'),
 ('반팔_티셔츠', NULL, 100, 20, 'TOP', 'N', NULL, 'example.com/image2.jpg'),
@@ -68,13 +68,13 @@ INSERT INTO outfit (outfit_name, outfit_weather, outfit_temp_max, outfit_temp_mi
 ('보조_배터리', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image58.jpg'),
 ('손수건', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image59.jpg');
 
-INSERT INTO style (style_name) VALUES
+INSERT INTO STYLE (style_name) VALUES
                                    ('casual'),   -- 1
                                    ('formal'),   -- 2
                                    ('sporty'),   -- 3
                                    ('normal');   -- 4
 
-INSERT INTO outfit_style (outfit_seq, style_seq) VALUES
+INSERT INTO OUTFIT_STYLE (outfit_seq, style_seq) VALUES
 -- 캐주얼 스타일
 (1, 1),    -- 맨투맨
 (2, 1),    -- 반팔 티셔츠
@@ -115,14 +115,14 @@ INSERT INTO outfit_style (outfit_seq, style_seq) VALUES
 (39, 3),   -- 스니커즈
 (40, 3);   -- 크록스
 
-INSERT INTO situation (situation_name) VALUES
+INSERT INTO SITUATION (situation_name) VALUES
                                            ('daily'),    -- 1: 일상
                                            ('travel'),   -- 2: 여행
                                            ('exercise'), -- 3: 운동
                                            ('couple'),   -- 4: 데이트
                                            ('formal');   -- 5: 격식있는 자리
 
-INSERT INTO outfit_situation (outfit_seq, situation_seq) VALUES
+INSERT INTO OUTFIT_SITUATION (outfit_seq, situation_seq) VALUES
 -- 일상 상황에 적합한 복장
 (1, 1),   -- 맨투맨
 (2, 1),   -- 반팔 티셔츠
@@ -184,7 +184,7 @@ INSERT INTO outfit_situation (outfit_seq, situation_seq) VALUES
 (37, 5),  -- 플랫슈즈
 (38, 5);  -- 하이힐
 
-INSERT INTO `condition` (condition_name) VALUES
+INSERT INTO `CONDITION` (condition_name) VALUES
                                    ('HOT'),
                                    ('COLD'),
                                    ('NORMAL');

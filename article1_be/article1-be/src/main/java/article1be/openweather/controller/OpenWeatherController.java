@@ -1,5 +1,6 @@
 package article1be.openweather.controller;
 
+import article1be.common.utils.DateTimeUtil;
 import article1be.openweather.dto.OpenWeather5DayDTO;
 import article1be.openweather.dto.OpenWeatherAirDTO;
 import article1be.openweather.dto.OpenWeatherDTO;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -97,7 +99,8 @@ public class OpenWeatherController {
                                                                      @RequestParam("lat") String lat,
                                                                      @RequestParam("lon") String lon) throws UnsupportedEncodingException{
 
-        ResponseMainWeatherDTO mainWeatherData = openWeatherService.getMainWeatherData(inputTime, lat, lon);
+        LocalDateTime time = DateTimeUtil.stringParseToLocalDateTime(inputTime);
+        ResponseMainWeatherDTO mainWeatherData = openWeatherService.getMainWeatherData(time, lat, lon);
 
         return ResponseEntity.ok(mainWeatherData);
     }

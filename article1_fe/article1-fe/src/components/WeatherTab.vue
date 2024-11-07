@@ -13,12 +13,12 @@ const highTemp = ref();
 const lowTemp = ref();
 const pm2_5 = ref();  // 초미세먼지
 const pm10 = ref();   // 미세먼지
+const nowDescription = ref('');
 
 const openWeather = ref([]);  // 날씨 데이터를 저장할 객체
 
-const description = '맑음';
 const getWeather = async () => {
-  time.value = '2024-11-06-14:00';
+  time.value = '2024-11-07-17:12';
   lat.value = '37.4972160230992';
   lon.value = '126.927607240617';
   await axios.get(`/weather`, {
@@ -40,6 +40,7 @@ const getWeather = async () => {
           lowTemp.value = Math.round(openWeather.value.lowTemp);
           pm2_5.value = openWeather.value.pm2_5;
           pm10.value = openWeather.value.pm10;
+          nowDescription.value = openWeather.value.nowWeatherDescription;
         }
       })
       .catch(err => {
@@ -113,37 +114,51 @@ const getPm10Text = (pm10) => {
         <img :src="`https://openweathermap.org/img/wn/${nowWeatherIcon}@2x.png`" alt="날씨 아이콘">
       </div>
       <div class="weather-temp">
-        <div class="temp">현재온도: {{ nowTemp || '데이터 없음' }} ℃</div>
+        <div class="now-temp">{{ nowTemp || '데이터 없음' }} ℃</div>
       </div>
-      <div class="weather-code">{{ nowWeatherCode || '데이터 없음' }}</div>
-      <div class="weather-feel">체감온도: {{ nowFeelsLike }} ℃</div>
+      <div class="weather-description">{{ nowDescription || '데이터 없음' }}</div>
+      <div class="weather-feel">체감 {{ nowFeelsLike }} ℃</div>
+      <hr>
     </div>
-    <hr>
+
     <div class="weather-container_bottom">
       <div class="min_max-temp">
-        <div class="min-temp">최저기온: {{ lowTemp || '온도 데이터 없음' }} ℃</div>
-        <div class="max-temp">최고기온: {{ highTemp || '온도 데이터 없음' }} ℃</div>
+        <div class="min-temp">
+          <div class="min-temp-title temp-title">
+            <span>최저기온</span>
+          </div>
+          <div class="min-temp-main temp">
+            <span>{{ lowTemp || '온도 데이터 없음' }} ℃</span>
+          </div>
+        </div>
+
+        <div class="max-temp">
+          <div class="max-temp-title temp-title">
+            <span>최고기온</span>
+          </div>
+          <div class="max-temp-main temp">
+            <span>{{ highTemp || '온도 데이터 없음' }} ℃</span>
+          </div>
+        </div>
       </div>
       <div class="pm-box">
         <div
-            class="pm2_5"
+            class="pm2_5 pm"
             :style="getPm2_5Style(pm2_5)">
-          <div class="pm2_5-title">
+          <div class="pm2_5-title pm-title">
             <span>미세먼지</span>
           </div>
-          <div class="pm_25-info">
-            {{ pm2_5 }} µg/m³
+          <div class="pm_25-info pm-info">
             <span>{{ getPm2_5Text(pm2_5) }}</span>
           </div>
         </div>
         <div
-            class="pm10"
+            class="pm10 pm"
             :style="getPm10Style(pm10)">
-          <div class="pm10-title">
+          <div class="pm10-title pm-title">
             <span>초미세먼지</span>
           </div>
-          <div class="pm10-info">
-            {{ pm10 }} µg/m³
+          <div class="pm10-info pm-info">
             <span>{{ getPm10Text(pm10) }}</span>
           </div>
         </div>
@@ -154,5 +169,46 @@ const getPm10Text = (pm10) => {
 </template>
 
 <style scoped>
-
+  .weather-container{
+    width: 250px;
+    text-align: center;
+    background-color: rgb(0, 0, 0, 0.2);
+    height: 350px;
+    padding: 10px;
+  }
+  .now-temp, .weather-description{
+    font-size: 23px;
+    font-weight: bold;
+  }
+  .weather-description{
+    margin-top: 5px;
+  }
+  .weather-feel{
+    text-align: right;
+    font-size: 12px;
+  }
+  .min_max-temp{
+    display: flex;
+    justify-content: space-around;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  .min_max-temp .temp{
+    margin-top: 5px;
+  }
+  .pm-box{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  .pm{
+    width: 90px;
+    border-radius: 10px;
+  }
+  .pm-title span{
+    font-size: 12px;
+  }
+  .pm-info span{
+    font-weight: bold;
+  }
 </style>

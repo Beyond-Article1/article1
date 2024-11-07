@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +45,11 @@ public class OutfitService {
         User user = userRepository.findById(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+//        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+        LocalDateTime requestedAt = requestDTO.getRequestedAt();
 
         ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
-                requestedAtFormatted,
+                requestedAt,
                 String.valueOf(requestDTO.getLatitude()),
                 String.valueOf(requestDTO.getLongitude()));
 
@@ -111,10 +113,11 @@ public class OutfitService {
 
     public Map<OutfitCategory, List<OutfitResponseDTO>> getGuestRecommendedOutfits(OutfitRequestDTO requestDTO) throws UnsupportedEncodingException {
 
-        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+//        String requestedAtFormatted = requestDTO.getRequestedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+        LocalDateTime requestedAt = requestDTO.getRequestedAt();
 
         ResponseMainWeatherDTO weatherData = weatherService.getMainWeatherData(
-                requestedAtFormatted,
+                requestedAt,
                 String.valueOf(requestDTO.getLatitude()),
                 String.valueOf(requestDTO.getLongitude()));
 

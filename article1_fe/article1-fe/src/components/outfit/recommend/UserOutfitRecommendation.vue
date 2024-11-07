@@ -47,11 +47,11 @@ export default {
         }, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5MTUzNDh9.hYUPrRqbHdmVswbBVCmAgWxqrseP1VNFI3oSjAhP9L0wCIKMLZJRr7DzLOKQbFFhrlZibSiIRnP0ouSLBP2Bcg'
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6WyJVU0VSIl0sImV4cCI6MTczMDk4MjE5N30.oWZFbYMYgn3t6snY6Zj9GCzE5QkSaCSR3xM0j_DpnfY-GwKlysydTsHwKxS35i4FDjzPUYamDFb9eX30Xs1T7w'
           }
         });
         this.outfits = response.data;
-
+        console.log(this.outfits);
 
       } catch (error) {
         console.error("추천 데이터를 불러오지 못했습니다:", error);
@@ -135,7 +135,7 @@ export default {
         }, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5MTUzNDh9.hYUPrRqbHdmVswbBVCmAgWxqrseP1VNFI3oSjAhP9L0wCIKMLZJRr7DzLOKQbFFhrlZibSiIRnP0ouSLBP2Bcg'
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiYXV0aCI6WyJVU0VSIl0sImV4cCI6MTczMDk4MjE5N30.oWZFbYMYgn3t6snY6Zj9GCzE5QkSaCSR3xM0j_DpnfY-GwKlysydTsHwKxS35i4FDjzPUYamDFb9eX30Xs1T7w'
           }
         });
         alert("선택한 복장이 저장되었습니다.");
