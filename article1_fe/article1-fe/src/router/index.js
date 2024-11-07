@@ -5,7 +5,6 @@ import mypageRouter from "@/router/mypageRouter.js"
 import MapWithDateView from "@/views/outfit/setting/MapWithDateView.vue";
 import SelectSituation from "@/views/outfit/setting/SituationView.vue";
 import {createRouter, createWebHistory} from "vue-router";
-import OutfitRecommendationResult from "@/views/outfit/recommend/OutfitRecommendationResult.vue";
 import GuestOutfitRecommendation from "@/components/outfit/recommend/GuestOutfitRecommendation.vue";
 import UserOutfitRecommendation from "@/components/outfit/recommend/UserOutfitRecommendation.vue";
 

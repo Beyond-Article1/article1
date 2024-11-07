@@ -1,8 +1,8 @@
 package article1be.openweather.controller;
 
 import article1be.openweather.dto.OpenWeather5DayDTO;
-import article1be.openweather.dto.OpenWeatherDTO;
 import article1be.openweather.dto.OpenWeatherAirDTO;
+import article1be.openweather.dto.OpenWeatherDTO;
 import article1be.openweather.dto.response.ResponseAppointDTO;
 import article1be.openweather.dto.response.ResponseMainWeatherDTO;
 import article1be.openweather.dto.response.ResponseTodayDTO;
@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Slf4j
 @RestController

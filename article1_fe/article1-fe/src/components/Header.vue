@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 import router from "@/router/index.js";
 
 // 로그인 상태를 나타내는 변수

@@ -1,7 +1,6 @@
 package article1be.openweather.dto;
 
 import article1be.openweather.dto.weathers.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -18,8 +17,6 @@ public class OpenWeatherDTO {
     private String base;
 
     private MainDTO main;
-
-//    private Wind wind;
 
     private CloudsDTO clouds;
 

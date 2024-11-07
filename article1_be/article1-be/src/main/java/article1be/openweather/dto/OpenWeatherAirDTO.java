@@ -1,8 +1,6 @@
 package article1be.openweather.dto;
 
 import article1be.openweather.dto.airs.AirListDTO;
-import article1be.openweather.dto.airs.ComponentsDTO;
-import article1be.openweather.dto.airs.MainAirDTO;
 import article1be.openweather.dto.weathers.CoordDTO;
 import lombok.Data;
 
