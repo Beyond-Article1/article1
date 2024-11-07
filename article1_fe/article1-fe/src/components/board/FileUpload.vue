@@ -1,7 +1,7 @@
 <template>
   <div class="file-upload" @dragover.prevent @drop.prevent="handleDrop">
     <div class="label">
-      <span>이미지 업로드</span>
+      <span>{{ label }}</span>
     </div>
     <input
         :id="inputId"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   label: {
@@ -29,6 +29,9 @@ const props = defineProps({
     required: true
   }
 });
+
+// emit 정의
+const emit = defineEmits(['update:imageList']);
 
 const inputId = `file-upload-${Math.random().toString(36).substr(2, 9)}`; // 고유 ID 생성
 const images = ref([]); // 업로드된 이미지 URL을 저장할 배열
@@ -49,6 +52,7 @@ function handleFiles(files) {
       const reader = new FileReader();
       reader.onload = (e) => {
         images.value.push(e.target.result); // 이미지 URL 추가
+        emit('update:imageList', images.value); // 부모에게 이미지 리스트 전달
       };
       reader.readAsDataURL(file); // 파일을 데이터 URL로 읽기
     });

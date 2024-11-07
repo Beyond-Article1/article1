@@ -18,6 +18,7 @@ public class ReplyDTO {
 
     @Builder
     public ReplyDTO(
+            Long replySeq,
             long boardSeq,
             long replyUserSeq,
             String replyContent,
@@ -25,6 +26,7 @@ public class ReplyDTO {
             LocalDateTime delDate,
             boolean replyIsBlind
     ) {
+        this.replySeq = replySeq;
         this.boardSeq = boardSeq;
         this.replyUserSeq = replyUserSeq;
         this.replyContent = replyContent;

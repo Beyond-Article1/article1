@@ -8,17 +8,57 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+// vue
+import {ref} from 'vue';
+
+// router
+import {useRouter, useRoute} from "vue-router";
+
+// axios
+import axios from "axios";
+
+// auth
+import {useAuthStore} from "@/store/authStore.js";
+
+// component
 import NormalButton from "@/components/board/NormalButton.vue";
 
+const route = useRoute();
+const authStore = useAuthStore();
 const emit = defineEmits(['submit']);
-
 const commentText = ref('');
 
-function submitComment() {
-  if (commentText.value.trim()) {
+async function submitComment() {
+  if (commentText.value) {
+    // 댓글 등록 요청
+    await registerReply(commentText.value);
+    // 입력 필드를 초기화합니다.
+    commentText.value = '';
+    // 부모에게 댓글 등록 이벤트 발생
     emit('submit', commentText.value);
-    commentText.value = ''; // 입력 필드를 초기화합니다.
+  }
+}
+
+
+async function registerReply(replyContent) {
+  try {
+    const boardSeq = route.params.boardSeq;
+    const response = await axios.post(`http://localhost:8080/reply/${boardSeq}`, {
+      replyContent: replyContent // 입력된 댓글 내용을 서버로 전송
+    }, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // JWT 토큰을 헤더에 추가
+      }
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      emit('submit', replyContent); // 부모 컴포넌트로 댓글 등록 이벤트 발생
+    } else {
+      alert("댓글 등록에 실패했습니다."); // 실패 메시지
+    }
+  } catch (error) {
+    console.error("댓글 등록 중 오류가 발생했습니다.", error);
+    alert("댓글 등록 중 오류가 발생했습니다."); // 오류 메시지
   }
 }
 </script>

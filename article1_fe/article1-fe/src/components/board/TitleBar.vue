@@ -2,16 +2,20 @@
 const props = defineProps({
   userSeq: Number,
   regData: {
-    type: String,
+    type: String, // regData는 문자열로 받도록 변경
     required: true
   }
 });
 
-// regData를 Date 객체로 변환
-const regDateObject = new Date(props.regData);
-
 // 날짜를 'yyyy-MM-dd HH:mm' 형식으로 포맷하는 함수
-const formatDate = (date) => {
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+
+  // 유효한 날짜인지 확인
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
   const day = String(date.getDate()).padStart(2, '0');
@@ -25,8 +29,8 @@ const formatDate = (date) => {
 
 <template>
   <div id="title-bar">
-    <span class="user-seq">{{ userSeq }}</span>
-    <span class="reg-data">{{ formatDate(regDateObject) }}</span>
+    <span class="user-seq">{{ props.userSeq }}</span>
+    <span class="reg-data">{{ formatDate(props.regData) }}</span>
   </div>
 </template>
 

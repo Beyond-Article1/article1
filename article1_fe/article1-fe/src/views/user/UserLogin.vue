@@ -1,4 +1,9 @@
 <script setup>
+
+import {useAuthStore} from "@/store/authStore.js";
+
+
+const authStore = useAuthStore();
 // 소셜 로그인 리디렉션 URL
 const redirectToSocial = (platform) => {
   let url = '';

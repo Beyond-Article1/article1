@@ -28,6 +28,7 @@ public class Reply {
     public Reply create(ReplyDTO replyDTO) {
         Reply reply = new Reply();
 
+
         reply.boardSeq = replyDTO.getBoardSeq();
         reply.replyUserSeq = replyDTO.getReplyUserSeq();
         reply.replyContent = replyDTO.getReplyContent();

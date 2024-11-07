@@ -1,4 +1,6 @@
 <script setup>
+import { ref, defineEmits } from "vue";
+
 const props = defineProps({
   boardTitle: String,
   boardContent: String,
@@ -8,6 +10,8 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(["delete"]); // 삭제 이벤트 정의
+
 // 신고 버튼 클릭 이벤트
 function blameBoard() {
   console.log("신고");
@@ -15,7 +19,7 @@ function blameBoard() {
 
 // 삭제 버튼 클릭 이벤트
 function deleteBoard() {
-  console.log("삭제")
+  emit("delete"); // 부모에게 삭제 이벤트를 전달
 }
 </script>
 

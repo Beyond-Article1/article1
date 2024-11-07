@@ -1,6 +1,7 @@
 package article1be.blame.controller;
 
 import article1be.blame.service.BlameService;
+import article1be.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class BlameController {
     )
     @PostMapping(value = "/{boardSeq}")
     public ResponseEntity<String> blameBoard(@PathVariable("boardSeq") long boardSeq) {
-        service.createBoardBlame(boardSeq);
+        service.createBoardBlame(boardSeq, SecurityUtil.getCurrentUserSeq());
 
         return ResponseEntity.ok("신고가 완료되었습니다.");
     }
@@ -40,7 +41,7 @@ public class BlameController {
     )
     @PostMapping(value = "/{replySeq}")
     public ResponseEntity<String> blameReply(@PathVariable("replySeq") long replySeq) {
-        service.createReplyBlame(replySeq);
+        service.createReplyBlame(replySeq, SecurityUtil.getCurrentUserSeq());
 
         return ResponseEntity.ok("신고가 완료되었습니다.");
     }
@@ -52,7 +53,7 @@ public class BlameController {
     )
     @PostMapping(value = "/{reviewSeq}")
     public ResponseEntity<String> blameReview(@PathVariable("reviewSeq") long reviewSeq) {
-        service.createReviewBlame(reviewSeq);
+        service.createReviewBlame(reviewSeq, SecurityUtil.getCurrentUserSeq());
 
         return ResponseEntity.ok("신고가 완료되었습니다.");
     }

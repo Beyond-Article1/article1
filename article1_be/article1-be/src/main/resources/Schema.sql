@@ -69,7 +69,6 @@ CREATE TABLE outfit (
                         outfit_category VARCHAR(50) NOT NULL COMMENT '상의, 하의, 아우터, 신발, 악세사리',
                         outfit_gender VARCHAR(50) NOT NULL COMMENT 'M, F, N (남, 여, 무관)',
                         outfit_level VARCHAR(50) NULL COMMENT '권장, 필수, 선택',
-                        outfit_img VARCHAR(500) NOT NULL,
                         PRIMARY KEY (outfit_seq)
 );
 

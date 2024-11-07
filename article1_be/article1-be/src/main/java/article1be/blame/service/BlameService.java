@@ -25,10 +25,10 @@ public class BlameService {
 
     // 게시글 신고
     @Transactional
-    public void createBoardBlame(long boardSeq) {
+    public void createBoardBlame(long boardSeq, long userSeq) {
 
         Blame blame = blameRepository.save(Blame.builder()
-                .blameUserSeq(123L)
+                .blameUserSeq(userSeq)
                 .blameBoardSeq(boardSeq)
                 .blameReplySeq(null)
                 .blameReviewSeq(null)
@@ -54,9 +54,9 @@ public class BlameService {
 
     // 댓글 신고
     @Transactional
-    public void createReplyBlame(long replySeq) {
+    public void createReplyBlame(long replySeq, long userSeq) {
         Blame blame = blameRepository.save(Blame.builder()
-                .blameUserSeq(123L)
+                .blameUserSeq(userSeq)
                 .blameBoardSeq(null)
                 .blameReplySeq(replySeq)
                 .blameReviewSeq(null)
@@ -81,9 +81,9 @@ public class BlameService {
 
     // 리뷰 신고
     @Transactional
-    public void createReviewBlame(long reviewSeq) {
+    public void createReviewBlame(long reviewSeq, long userSeq) {
         Blame blame = blameRepository.save(Blame.builder()
-                .blameUserSeq(123L)
+                .blameUserSeq(userSeq)
                 .blameBoardSeq(null)
                 .blameReplySeq(null)
                 .blameReviewSeq(reviewSeq)

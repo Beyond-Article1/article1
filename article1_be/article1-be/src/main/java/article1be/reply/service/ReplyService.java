@@ -4,12 +4,15 @@ import article1be.reply.dto.ReplyDTO;
 import article1be.reply.dto.RequestReply;
 import article1be.reply.entity.Reply;
 import article1be.reply.repository.ReplyRepository;
+import article1be.security.util.SecurityUtil;
+import article1be.user.entity.UserAuth;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +26,7 @@ public class ReplyService {
                 .stream()
                 .map(reply ->
                         ReplyDTO.builder()
+                                .replySeq(reply.getReplySeq())
                                 .boardSeq(reply.getBoardSeq())
                                 .replyUserSeq(reply.getReplyUserSeq())
                                 .replyContent(reply.getReplyContent())
@@ -41,20 +45,25 @@ public class ReplyService {
         Reply reply = repository.findById(replySeq).orElse(null);
 
         if (reply != null) {
-            reply.setBlind();
+            if (Objects.equals(reply.getReplyUserSeq(), SecurityUtil.getCurrentUserSeq()) || SecurityUtil.getCurrentUserAuthorities().equals(UserAuth.ADMIN)) {
+                reply.setBlind();
 
-            return true;
+                return true;
+            }
         } else {
             return false;
         }
+
+        return false;
     }
 
     // 댓글 생성
     @Transactional
     public Reply createReply(Long boardSeq, RequestReply requestReply) {
         ReplyDTO replyDTO = new ReplyDTO(
+                1L,             // DB에서 바꿔줌
                 boardSeq,
-                123L,
+                SecurityUtil.getCurrentUserSeq(),
                 requestReply.getReplyContent(),
                 LocalDateTime.now(),
                 null,

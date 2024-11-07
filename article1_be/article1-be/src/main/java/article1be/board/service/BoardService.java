@@ -9,34 +9,30 @@ import article1be.board.entity.Board;
 import article1be.board.entity.Picture;
 import article1be.board.repository.BoardRepository;
 import article1be.board.repository.PictureRepository;
+import article1be.reply.entity.Reply;
+import article1be.reply.repository.ReplyRepository;
+import article1be.security.util.SecurityUtil;
+import article1be.user.entity.UserAuth;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final PictureRepository pictureRepository;
+    private final ReplyRepository replyRepository;
     private final AmazonS3Service amazonS3Service;
-
-    @Autowired
-    BoardService(
-            BoardRepository boardRepository,
-            PictureRepository pictureRepository,
-            AmazonS3Service amazonS3Service
-    ) {
-        this.boardRepository = boardRepository;
-        this.pictureRepository = pictureRepository;
-        this.amazonS3Service = amazonS3Service;
-    }
 
     // 게시글 목록 조회
     public List<BoardDTO> getBoardList() {
@@ -104,7 +100,7 @@ public class BoardService {
     @Transactional
     public Board createBoard(RequestBoard newBoard) throws IOException {
         Board board = new Board().create(
-                123L,           // 테스트 데이터(로그인 구현완료되면 수정할 예정)
+                SecurityUtil.getCurrentUserSeq(),           // 테스트 데이터(로그인 구현완료되면 수정할 예정)
                 newBoard.getBoardTitle(),
                 newBoard.getBoardContent()
         );
@@ -136,9 +132,22 @@ public class BoardService {
 
     // 게시글 삭제
     @Transactional
-    public void deleteBoard(Long boardSeq) {
-        // 1. DB(BOARD)에 해당 게시글 삭제
-        boardRepository.deleteById(boardSeq);
+    public boolean deleteBoard(Long boardSeq) {
+        // 0. 작성자 여부 확인
+        Optional<Board> board = boardRepository.findById(boardSeq);
+
+        // 작성자가 아닌 경우
+        if (!Objects.equals(board.get().getUserSeq(), SecurityUtil.getCurrentUserSeq())) {
+            return false;
+        }
+        // 어드민이 아닌 경우 -> 권한 기능이 수정될 예정이므로 이 코드도 수정해야됨.
+        else if (SecurityUtil.getCurrentUserAuthorities().equals(UserAuth.USER)) {
+            return false;
+        }
+
+        // 1. DB(BOARD)에 해당 게시글 블라인드 처리
+        board.get().setBlind();
+        boardRepository.save(board.get());
 
         // 2. DB(PICTURE)에 해당 게시글 번호로 된 모든 데이터 블라인드 처리
         List<Picture> pictureList = pictureRepository.findByPictureBoardSeq(boardSeq);
@@ -148,6 +157,17 @@ public class BoardService {
             picture.setBlind();
             pictureRepository.save(picture); // 변경된 Picture 객체를 저장
         }
+
+        // 3. DB(Reply)에 해당 댓글 모두 블라인드 처리
+        List<Reply> replyList = replyRepository.findByBoardSeqAndReplyIsBlindFalse(boardSeq);
+
+        for (Reply reply : replyList) {
+            reply.setBlind();
+            replyRepository.save(reply);
+        }
+
+        // 삭제 성공시 true
+        return true;
     }
 
     // 게시글 수정
@@ -164,5 +184,4 @@ public class BoardService {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다."); // 게시글이 없을 경우 예외 처리
         }
     }
-
 }

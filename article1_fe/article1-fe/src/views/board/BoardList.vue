@@ -6,275 +6,46 @@ import BoardNoticeLi from "@/components/board/BoardNoticeLi.vue";
 import BoardLi from "@/components/board/BoardLi.vue";
 
 // Vue
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
-// 테스트 데이터
-const boardList = ref([
-  {
-    boardSeq: 1,
-    userSeq: 123,
-    boardTitle: "제목 1",
-    boardContent: "내용 1",
-    boardPictureList: [
-      {
-        pictureUrl: null,
-        description: "이미지 설명 1"
+// Axios
+import axios from "axios";
+
+// Router
+import {useRouter} from "vue-router";
+
+// Pinia
+import {useAuthStore} from "@/store/authStore.js";
+
+// Jwt 토근 정보 확인
+const authStore = useAuthStore();
+
+// 게시글 목록 변수
+const boardList = ref([]);
+
+// 데이터 호출
+const fetchData = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/board", {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
       }
-    ],
-    regDate: "2023-10-31T10:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 2,
-    userSeq: 124,
-    boardTitle: "제목 2",
-    boardContent: "내용 2",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 2"
-      },
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "추가 이미지 설명 2"
-      }
-    ],
-    regDate: "2023-11-01T11:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 3,
-    userSeq: 125,
-    boardTitle: "제목 3",
-    boardContent: "내용 3",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 3"
-      }
-    ],
-    regDate: "2023-11-02T12:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 4,
-    userSeq: 126,
-    boardTitle: "제목 4",
-    boardContent: "내용 4",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 4"
-      }
-    ],
-    regDate: "2023-11-03T13:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 5,
-    userSeq: 127,
-    boardTitle: "제목 5",
-    boardContent: "내용 5",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 5"
-      },
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "추가 이미지 설명 5"
-      }
-    ],
-    regDate: "2023-11-04T14:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: true
-  },
-  {
-    boardSeq: 6,
-    userSeq: 128,
-    boardTitle: "제목 6",
-    boardContent: "내용 6",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 6"
-      }
-    ],
-    regDate: "2023-11-05T15:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 7,
-    userSeq: 129,
-    boardTitle: "제목 7",
-    boardContent: "내용 7",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 7"
-      }
-    ],
-    regDate: "2023-11-06T16:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: true
-  },
-  {
-    boardSeq: 8,
-    userSeq: 130,
-    boardTitle: "제목 8",
-    boardContent: "내용 8",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 8"
-      }
-    ],
-    regDate: "2023-11-07T17:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 9,
-    userSeq: 131,
-    boardTitle: "제목 9",
-    boardContent: "내용 9",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 9"
-      }
-    ],
-    regDate: "2023-11-08T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 10,
-    userSeq: 132,
-    boardTitle: "제목 10",
-    boardContent: "이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-    boardPictureList: [
-      {
-        pictureUrl: null,
-        description: "이미지 설명 10"
-      },
-    ],
-    regDate: "2023-11-09T19:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: true
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
-  },
-  {
-    boardSeq: 11,
-    userSeq: 1311,
-    boardTitle: "제목 11",
-    boardContent: "내용 11",
-    boardPictureList: [
-      {
-        pictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUPTGaKZ5ppYrFn0Lcg2w33ozjP3CoLydPA&s",
-        description: "이미지 설명 11"
-      }
-    ],
-    regDate: "2024-11-05T18:00:00",
-    upDate: null,
-    delDate: null,
-    boardIsNotice: false
+    });
+
+    if (response.status === 200) {
+      boardList.value = response.data;
+    } else {
+      console.log("게시글 목록 조회 실패");
+      console.log(`코드: ` + response.status);
+    }
+
+  } catch (error) {
+    console.error("어라라...?\n", error);
   }
-]);
+};
+
+// 라우터
+const router = useRouter();
 
 // 정렬된 게시물 목록 생성
 const sortedBoardList = computed(() => {
@@ -316,6 +87,23 @@ const formatDate = (dateString) => {
   }
 };
 
+// 상세 조회 페이지 이동
+function goToDetailPage(boardSeq) {
+  router.push(`/board/${boardSeq}`);
+}
+
+// 게시들 등록 페이지 이동
+function goToRegister() {
+  router.push(`/board/BoardRegister`);
+}
+
+onMounted(() => {
+  console.log("access token");
+  console.log(authStore.accessToken);
+
+  fetchData();
+})
+
 </script>
 
 <template>
@@ -324,24 +112,42 @@ const formatDate = (dateString) => {
       <table>
         <tbody>
         <!-- 공지사항 표시 (최대 2개) -->
-        <tr v-for="(item, index) in noticeList.slice(0, 2)" :key="item.boardSeq">
-          <BoardNoticeLi
-              :title="item.boardTitle"
-              :content="item.boardContent"
-              :date="formatDate(item.regDate)"
-              :writer="item.userSeq"
-              :imageUrl="item.boardPictureList[0]?.pictureUrl"
+        <tr v-if="noticeList && noticeList.length > 0" v-for="item in noticeList.slice(0, 2)" :key="item.boardSeq">
+          <BoardNoticeLi v-if="item.boardPictureList && item.boardPictureList.length > 0"
+                         v-on:click="goToDetailPage(item.boardSeq)"
+                         :title="item.boardTitle"
+                         :content="item.boardContent"
+                         :date="formatDate(item.regDate)"
+                         :writer="item.userSeq"
+                         :imageUrl="item.boardPictureList[0]?.pictureUrl"
+          />
+          <BoardNoticeLi v-else
+                         v-on:click="goToDetailPage(item.boardSeq)"
+                         :title="item.boardTitle"
+                         :content="item.boardContent"
+                         :date="formatDate(item.regDate)"
+                         :writer="item.userSeq"
+                         :imageUrl="null"
           />
         </tr>
 
         <!-- 모든 일반 게시물 표시 (공지사항 제외) -->
-        <tr v-for="item in regularPosts" :key="item.boardSeq">
-          <BoardLi
-              :title="item.boardTitle"
-              :content="item.boardContent"
-              :date="formatDate(item.regDate)"
-              :writer="item.userSeq"
-              :imageUrl="item.boardPictureList[0]?.pictureUrl"
+        <tr v-if="regularPosts && regularPosts.length > 0" v-for="item in regularPosts" :key="item.boardSeq">
+          <BoardLi v-if="item.boardPictureList && item.boardPictureList.length > 0"
+                   v-on:click="goToDetailPage(item.boardSeq)"
+                   :title="item.boardTitle"
+                   :content="item.boardContent"
+                   :date="formatDate(item.regDate)"
+                   :writer="item.userSeq"
+                   :imageUrl="item.boardPictureList[0]?.pictureUrl"
+          />
+          <BoardLi v-else
+                   v-on:click="goToDetailPage(item.boardSeq)"
+                   :title="item.boardTitle"
+                   :content="item.boardContent"
+                   :date="formatDate(item.regDate)"
+                   :writer="item.userSeq"
+                   :imageUrl="null"
           />
         </tr>
         </tbody>

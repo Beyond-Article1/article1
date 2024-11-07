@@ -15,6 +15,7 @@
 import axios from 'axios';
 import OutfitRecommendationList from '@/components/outfit/recommend/OutfitRecommendationList.vue';
 import {useSelectedInfoStore} from '@/store/selectedInfoStore.js';
+import outfitRecommendationResult from "@/views/outfit/recommend/OutfitRecommendationResult.vue";
 
 export default {
 
@@ -50,7 +51,7 @@ export default {
         }, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMSIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5OTk4MTN9.Hm8Qiy6mTlFbSin3SDxk3dyH6YpXkxwSybJaNkPN2SNiRVk5fyMewcaNuSWrnseVrSA_x2owkOfR0IiUZrkf2A'
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5MTUzNDh9.hYUPrRqbHdmVswbBVCmAgWxqrseP1VNFI3oSjAhP9L0wCIKMLZJRr7DzLOKQbFFhrlZibSiIRnP0ouSLBP2Bcg'
           }
         });
         this.outfits = response.data;
@@ -130,7 +131,7 @@ export default {
         }, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMSIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5OTk4MTN9.Hm8Qiy6mTlFbSin3SDxk3dyH6YpXkxwSybJaNkPN2SNiRVk5fyMewcaNuSWrnseVrSA_x2owkOfR0IiUZrkf2A'
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImF1dGgiOlsiVVNFUiJdLCJleHAiOjE3MzA5MTUzNDh9.hYUPrRqbHdmVswbBVCmAgWxqrseP1VNFI3oSjAhP9L0wCIKMLZJRr7DzLOKQbFFhrlZibSiIRnP0ouSLBP2Bcg'
           }
         });
         alert("선택한 복장이 저장되었습니다.");

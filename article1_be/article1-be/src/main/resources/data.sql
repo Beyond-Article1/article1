@@ -1,72 +1,95 @@
-INSERT INTO outfit (outfit_name, outfit_weather, outfit_temp_max, outfit_temp_min, outfit_category, outfit_gender, outfit_level, outfit_img) VALUES
--- 상의
-('맨투맨', NULL, 20, -100, 'TOP', 'N', NULL, 'example.com/image1.jpg'),
-('반팔_티셔츠', NULL, 100, 20, 'TOP', 'N', NULL, 'example.com/image2.jpg'),
-('셔츠', NULL, 25, 15, 'TOP', 'N', NULL, 'example.com/image3.jpg'),
-('반팔셔츠', NULL, 20, 100, 'TOP', 'N', NULL, 'example.com/image4.jpg'),
-('린넨셔츠', NULL, 20, 100, 'TOP', 'N', NULL, 'example.com/image5.jpg'),
-('니트_스웨터', NULL, 15, -100, 'TOP', 'N', NULL, 'example.com/image6.jpg'),
-('후드티', NULL, 18, 8, 'TOP', 'N', NULL, 'example.com/image7.jpg'),
-('폴로_반팔티', NULL, 28, 18, 'TOP', 'M', NULL, 'example.com/image8.jpg'),
-('나시', NULL, 35, 25, 'TOP', 'N', NULL, 'example.com/image9.jpg'),
-('터틀넥_스웨터', NULL, 12, 0, 'TOP', 'N', NULL, 'example.com/image10.jpg'),
-('블라우스', NULL, 25, 15, 'TOP', 'F', NULL, 'example.com/image11.jpg'),
+INSERT INTO outfit (outfit_name, outfit_weather, outfit_temp_max, outfit_temp_min, outfit_category, outfit_gender, outfit_level) VALUES
+-- 상의 (TOP)
 
--- 하의
-('긴청바지', NULL, 25, 10, 'BOTTOM', 'N', NULL, 'example.com/image12.jpg'),
-('긴면바지', NULL, 30, 15, 'BOTTOM', 'M', NULL, 'example.com/image13.jpg'),
-('반바지', NULL, 35, 20, 'BOTTOM', 'N', NULL, 'example.com/image14.jpg'),
-('슬랙스', NULL, 28, 18, 'BOTTOM', 'N', NULL, 'example.com/image15.jpg'),
-('트레이닝_팬츠', NULL, 20, 5, 'BOTTOM', 'N', NULL, 'example.com/image16.jpg'),
-('조거_팬츠', NULL, 18, 8, 'BOTTOM', 'N', NULL, 'example.com/image17.jpg'),
-('와이드_팬츠', NULL, 25, 15, 'BOTTOM', 'N', NULL, 'example.com/image18.jpg'),
-('스키니_진', NULL, 22, 12, 'BOTTOM', 'F', NULL, 'example.com/image19.jpg'),
-('스커트', NULL, 30, 20, 'BOTTOM', 'F', NULL, 'example.com/image20.jpg'),
-('롱_스커트', NULL, 28, 18, 'BOTTOM', 'F', NULL, 'example.com/image21.jpg'),
+('기모_맨투맨', NULL, 10, -100, 'TOP', 'N', NULL),
+('니트_스웨터', NULL, 15, -100, 'TOP', 'N', NULL),
+('일반_맨투맨', NULL, 15, 0, 'TOP', 'N', NULL),
+('후드티', NULL, 18, 0, 'TOP', 'N', NULL),
+('셔츠', NULL, 20, 5, 'TOP', 'N', NULL),
+('린넨셔츠', NULL, 23, 5, 'TOP', 'N', NULL),
+('얇은_니트', NULL, 25, 10, 'TOP', 'N', NULL),
+('롱슬리브', NULL, 25, 10, 'TOP', 'N', NULL),
+('블라우스', NULL, 30, 10, 'TOP', 'F', NULL),
+('폴로_반팔티', NULL, 35, 13, 'TOP', 'M', NULL),
+('반팔_티셔츠', NULL, 100, 15, 'TOP', 'N', NULL),
+('반팔_셔츠', NULL, 100, 15, 'TOP', 'N', NULL),
+('드라이핏_티셔츠', NULL, 100, 15, 'TOP', 'N', NULL),
+('크롭티', NULL, 100, 18, 'TOP', 'F', NULL),
+('나시', NULL, 100, 20, 'TOP', 'N', NULL),
 
--- 아우터
-('자켓', NULL, 15, 5, 'OUTERWEAR', 'N', NULL, 'example.com/image22.jpg'),
-('코트', NULL, 15, -10, 'OUTERWEAR', 'N', NULL, 'example.com/image23.jpg'),
-('패딩', NULL, 10, -100, 'OUTERWEAR', 'N', NULL, 'example.com/image24.jpg'),
-('후드_집업', NULL, 20, 10, 'OUTERWEAR', 'N', NULL, 'example.com/image25.jpg'),
-('트렌치코트', NULL, 20, 8, 'OUTERWEAR', 'N', NULL, 'example.com/image26.jpg'),
-('무스탕', NULL, 12, -3, 'OUTERWEAR', 'N', NULL, 'example.com/image27.jpg'),
-('경량_패딩', NULL, 15, 0, 'OUTERWEAR', 'N', NULL, 'example.com/image28.jpg'),
-('바람막이', NULL, 20, 10, 'OUTERWEAR', 'N', NULL, 'example.com/image29.jpg'),
-('얇은_가디건', NULL, 25, 15, 'OUTERWEAR', 'N', NULL, 'example.com/image30.jpg'),
+-- 하의 (BOTTOM)
+('기모바지', NULL, 10, -100, 'BOTTOM', 'N', NULL),
+('트레이닝_팬츠', NULL, 20, -10, 'BOTTOM', 'N', NULL),
+('조거_팬츠', NULL, 18, -10, 'BOTTOM', 'N', NULL),
+('긴청바지', NULL, 25, -10, 'BOTTOM', 'N', NULL),
+('스키니_진', NULL, 25, -10, 'BOTTOM', 'F', NULL),
+('긴면바지', NULL, 25, -10, 'BOTTOM', 'M', NULL),
+('카고_팬츠', NULL, 25, -5, 'BOTTOM', 'N', NULL),
+('롱슬랙스', NULL, 25, -5, 'BOTTOM', 'N', NULL),
+('와이드_팬츠', NULL, 30, 0, 'BOTTOM', 'N', NULL),
+('레깅스', NULL, 30, 0, 'BOTTOM', 'F', NULL),
+('롱_스커트', NULL, 30, 0, 'BOTTOM', 'F', NULL),
+('청반바지', NULL, 100, 15, 'BOTTOM', 'F', NULL),
+('트레이닝_반바지', NULL, 100, 15, 'BOTTOM', 'N', NULL),
+('슬랙스_반바지', NULL, 100, 15, 'BOTTOM', 'F', NULL),
+('미니_스커트', NULL, 100, 18, 'BOTTOM', 'F', NULL),
 
--- 신발
-('운동화', NULL, 30, -10, 'SHOES', 'N', NULL, 'example.com/image31.jpg'),
-('슬리퍼', NULL, 100, 20, 'SHOES', 'N', NULL, 'example.com/image32.jpg'),
-('부츠', NULL, 15, -10, 'SHOES', 'N', NULL, 'example.com/image33.jpg'),
-('샌들', NULL, 100, 20, 'SHOES', 'N', NULL, 'example.com/image34.jpg'),
-('로퍼', NULL, 25, -5, 'SHOES', 'N', NULL, 'example.com/image35.jpg'),
-('워커', NULL, 25, -5, 'SHOES', 'N', NULL, 'example.com/image36.jpg'),
-('플랫슈즈', NULL, 30, 0, 'SHOES', 'F', NULL, 'example.com/image37.jpg'),
-('하이힐', NULL, 30, 0, 'SHOES', 'F', NULL, 'example.com/image38.jpg'),
-('발목_부츠', NULL, 20, -20, 'SHOES', 'N', NULL, 'example.com/image39.jpg'),
-('스니커즈', NULL, 30, -10, 'SHOES', 'N', NULL, 'example.com/image40.jpg'),
-('크록스', NULL, 100, 20, 'SHOES', 'N', NULL, 'example.com/image41.jpg'),
+-- 아우터 (OUTERWEAR)
+('롱패딩', NULL, 7, -100, 'OUTERWEAR', 'N', NULL),
+('패딩', NULL, 10, -100, 'OUTERWEAR', 'N', NULL),
+('코트', NULL, 15, -10, 'OUTERWEAR', 'N', NULL),
+('무스탕', NULL, 12, -3, 'OUTERWEAR', 'N', NULL),
+('가죽자켓', NULL, 13, 0, 'OUTERWEAR', 'N', NULL),
+('경량_패딩', NULL, 15, 0, 'OUTERWEAR', 'N', NULL),
+('패딩_조끼', NULL, 15, 0, 'OUTERWEAR', 'N', NULL),
+('야구점퍼', NULL, 15, 0, 'OUTERWEAR', 'N', NULL),
+('항공점퍼', NULL, 15, 0, 'OUTERWEAR', 'N', NULL),
+('자켓', NULL, 15, 0, 'OUTERWEAR', 'N', NULL),
+('트렌치코트', NULL, 17, 0, 'OUTERWEAR', 'N', NULL),
+('바람막이', NULL, 20, 5, 'OUTERWEAR', 'N', NULL),
+('후드_집업', NULL, 20, 5, 'OUTERWEAR', 'N', NULL),
+('블레이져', NULL, 20, 5, 'OUTERWEAR', 'N', NULL),
+('얇은_가디건', NULL, 25, 10, 'OUTERWEAR', 'N', NULL),
 
--- 악세사리
-('선글라스', 800, 100, 15, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image42.jpg'),
-('넥워머', 801, 10, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image43.jpg'),
-('귀마개', 801, 10, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image44.jpg'),
-('썬캡', 800, 35, 20, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image45.jpg'),
-('장갑', 801, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image46.jpg'),
-('귀도리', 801, 10, -5, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image47.jpg'),
-('양산', 801, 100, 20, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image48.jpg'),
-('목도리', 804, 10, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image49.jpg'),
-('플리스_모자', 801, 10, -10, 'ACCESSORY', 'N', 'REQUIRED', 'example.com/image50.jpg'),
-('자외선_차단제', 800, 100, 15, 'ACCESSORY', 'N', 'REQUIRED', 'example.com/image51.jpg'),
-('휴대용_선풍기', 800, 100, 20, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image52.jpg'),
-('핫팩', 801, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image53.jpg'),
-('우산', 500, 100, -100, 'ACCESSORY', 'N', 'REQUIRED', 'example.com/image54.jpg'),
-('마스크', NULL, 100, -100, 'ACCESSORY', 'N', 'REQUIRED', 'example.com/image55.jpg'),
-('비니', 800, 10, -100, 'ACCESSORY', 'N', 'RECOMMENDED', 'example.com/image56.jpg'),
-('손목시계', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image57.jpg'),
-('보조_배터리', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image58.jpg'),
-('손수건', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION', 'example.com/image59.jpg');
+
+-- 신발 (SHOES)
+('털부츠', NULL, 10, -100, 'SHOES', 'N', NULL),
+('롱부츠', NULL, 15, -20, 'SHOES', 'F', NULL),
+('운동화', NULL, 35, -20, 'SHOES', 'N', NULL),
+('러닝화', NULL, 35, -10, 'SHOES', 'N', NULL),
+('레인부츠', 500, 25, -10, 'SHOES', 'N', NULL),
+('워커', NULL, 35, -5, 'SHOES', 'N', NULL),
+('로퍼', NULL, 35, -5, 'SHOES', 'N', NULL),
+('플랫슈즈', NULL, 35, 0, 'SHOES', 'F', NULL),
+('스니커즈', NULL, 35, -20, 'SHOES', 'N', NULL),
+('하이힐', NULL, 100, 0, 'SHOES', 'F', NULL),
+('크록스', NULL, 100, 10, 'SHOES', 'N', NULL),
+('슬리퍼', NULL, 100, 10, 'SHOES', 'N', NULL),
+('샌들', NULL, 100, 15, 'SHOES', 'N', NULL),
+('쪼리', NULL, 100, 15, 'SHOES', 'N', NULL),
+
+
+-- 악세사리 (ACCESSORY)
+('핫팩', NULL, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('장갑', NULL, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('귀마개', NULL, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('목도리', NULL, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('플리스_모자', NULL, 5, -100, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('귀도리', NULL, 10, -5, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('우산', 500, 100, -100, 'ACCESSORY', 'N', 'REQUIRED'),
+('자외선_차단제', 800, 100, 15, 'ACCESSORY', 'N', 'REQUIRED'),
+('선글라스', 800, 100, 15, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('양산', 800, 100, 18, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('휴대용_선풍기', NULL, 100, 20, 'ACCESSORY', 'N', 'SELECTION'),
+('썬캡', 800, 100, 20, 'ACCESSORY', 'N', 'RECOMMENDED'),
+('마스크', NULL, 100, -100, 'ACCESSORY', 'N', 'REQUIRED'),
+('손목시계', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION'),
+('부채', NULL, 100, 17, 'ACCESSORY', 'N', 'SELECTION'),
+('비니', NULL, 25, -10, 'ACCESSORY', 'N', 'SELECTION'),
+('보조배터리', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION'),
+('스마트워치', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION'),
+('아날로그손목시계', NULL, 100, -100, 'ACCESSORY', 'N', 'SELECTION');
+
 
 INSERT INTO style (style_name) VALUES
                                    ('casual'),   -- 1
@@ -75,119 +98,197 @@ INSERT INTO style (style_name) VALUES
                                    ('normal');   -- 4
 
 INSERT INTO outfit_style (outfit_seq, style_seq) VALUES
--- 캐주얼 스타일
-(1, 1),    -- 맨투맨
-(2, 1),    -- 반팔 티셔츠
-(6, 1),    -- 폴로 반팔티
-(7, 1),    -- 나시
-(10, 1),   -- 터틀넥 스웨터
-(12, 1),   -- 긴청바지
-(13, 1),   -- 긴면바지
-(14, 1),   -- 반바지
-(16, 1),   -- 트레이닝 팬츠
-(24, 1),   -- 후드 집업
-(28, 1),   -- 바람막이
-(31, 1),   -- 운동화
-(32, 1),   -- 슬리퍼
-(39, 1),   -- 스니커즈
-(40, 1),   -- 크록스
+-- 상의 (TOP)
+(1, 1), (1, 2), (1, 3), (1, 4), -- 기모_맨투맨: , , , 모든 스타일 포함
+(2, 1), (2, 2),                 -- 니트_스웨터:
+(3, 2), (3, 2), (3, 3), (3, 4), -- 일반_맨투맨:
+(4, 1), (4, 3),                 -- 후드티:
+(5, 2),                         -- 셔츠: ,
+(6, 1), (6, 2),                 -- 린넨셔츠: ,
+(7, 1), (7, 2),                 -- 얇은_니트: ,
+(8, 1), (8, 2), (8, 3), (8, 4), -- 롱슬리브: , , , 모든 스타일 포함
+(9, 2),                         -- 블라우스:
+(10, 2),                        -- 폴로_반팔티:
+(11, 1), (11, 2), (11, 3), (11, 4), -- 반팔_티셔츠: ,
+(12, 2),                        -- 반팔_셔츠:
+(13, 3),                        -- 드라이핏_티셔츠:
+(14, 1), (14, 3),               -- 크롭티:
+(15, 1), (15, 3),               -- 나시: ,
 
--- 포멀 스타일
-(3, 2),    -- 셔츠
-(5, 2),    -- 반팔셔츠
-(8, 2),    -- 터틀넥 스웨터
-(15, 2),   -- 슬랙스
-(21, 2),   -- 자켓
-(22, 2),   -- 코트
-(26, 2),   -- 트렌치코트
-(35, 2),   -- 로퍼
-(37, 2),   -- 플랫슈즈
-(38, 2),   -- 하이힐
+-- 하의 (BOTTOM)
+(16, 1), (16, 2), (16, 3), (16, 4), -- 기모바지: , , , 모든 스타일 포함
+(17, 3),                        -- 트레이닝_팬츠:
+(18, 1), (18, 3),               -- 조거_팬츠:
+(19, 2), (19, 3),               -- 긴청바지: ,
+(20, 1),                        -- 스키니_진:
+(21, 1), (21, 2),               -- 긴면바지:
+(22, 1), (22, 3),               -- 카고_팬츠: ,
+(23, 1), (23, 2),               -- 롱슬랙스: ,
+(24, 1), (24, 2),               -- 와이드_팬츠: ,
+(25, 3),                        -- 레깅스:
+(26, 1), (26, 2),               -- 롱_스커트: ,
+(27, 1),                        -- 청반바지:
+(28, 3),                        -- 트레이닝_반바지:
+(29, 2),                        -- 슬랙스_반바지:
+(30, 1), (30, 2),               -- 미니_스커트:
 
--- 스포티 스타일
-(7, 3),    -- 후드티
-(10, 3),   -- 나시
-(14, 3),   -- 반바지
-(16, 3),   -- 트레이닝 팬츠
-(17, 3),   -- 조거 팬츠
-(24, 3),   -- 후드 집업
-(31, 3),   -- 운동화
-(39, 3),   -- 스니커즈
-(40, 3);   -- 크록스
+-- 아우터 (OUTERWEAR)
+(31, 1), (31, 3),               -- 롱패딩: ,
+(32, 1), (32, 3),               -- 패딩:
+(33, 1), (33, 2),               -- 코트: , , 모든 스타일 포함
+(34, 2),                        -- 무스탕:
+(35, 1),                        -- 가죽자켓:
+(36, 1), (36, 3),               -- 경량_패딩: ,
+(37, 1), (37, 2), (37, 3), (37, 4), -- 패딩_조끼:
+(38, 1), (38, 3),               -- 야구점퍼: ,
+(39, 1),                        -- 항공점퍼:
+(40, 1), (40, 2),               -- 자켓: ,
+(41, 2),                        -- 트렌치코트: , 모든 스타일 포함
+(42, 3),                        -- 바람막이:
+(43, 1),                        -- 후드_집업:
+(44, 2),                        -- 블레이져:
+(45, 1), (45, 2),               -- 얇은_가디건: ,
+
+-- 신발 (SHOES)
+(46, 1), (46, 2),               -- 털부츠: , , 모든 스타일 포함
+(47, 2),                        -- 롱부츠:
+(48, 1), (48, 3),               -- 운동화: ,
+(49, 1), (49, 3),               -- 러닝화: ,
+(50, 1), (50, 2), (50, 3),      -- 레인부츠
+(51, 1), (51, 2),               -- 워커:
+(52, 1), (52, 2),               -- 로퍼: ,
+(53, 2),                        -- 플랫슈즈:
+(54, 1),                        -- 스니커즈:
+(55, 2),                        -- 하이힐:
+(56, 1), (56, 3),               -- 크록스: ,
+(57, 1),                        -- 슬리퍼
+(58, 1),                        -- 샌들
+(59, 1),                        -- 쪼리
+
+-- 악세사리 (ACCESSORY)
+(60, 1), (60, 2), (60, 3), (60, 4), -- 핫팩:
+(61, 1), (61, 2), (61, 3), (61, 4), -- 장갑:
+(62, 1), (62, 2), (62, 3), (62, 4), -- 귀마개:
+(63, 1), (63, 2),               -- 목도리: ,
+(64, 1),                        -- 플리스_모자:
+(65, 1), (65, 2),               -- 귀도리:
+(66, 1), (66, 2), (66, 3), (66, 4), -- 우산:
+(67, 1), (67, 2), (67, 3), (67, 4), -- 자외선_차단제:
+(68, 2),                        -- 선글라스:
+(69, 1), (69, 2),               -- 양산:
+(70, 1),                        -- 휴대용_선풍기:
+(71, 1),                        -- 썬캡:
+(72, 1), (72, 2), (72, 3), (72, 4), -- 마스크:
+(73, 2),                        -- 손목시계:
+(74, 1), -- 부채:
+(75, 1), -- 비니
+(76, 1), -- 보조배터리
+(77, 1),    (77, 3) ,        -- 스마트워치
+(78, 2);
 
 INSERT INTO situation (situation_name) VALUES
                                            ('daily'),    -- 1: 일상
                                            ('travel'),   -- 2: 여행
-                                           ('exercise'), -- 3: 운동
-                                           ('couple'),   -- 4: 데이트
-                                           ('formal');   -- 5: 격식있는 자리
-
+                                           ('couple'),   -- 3: 데이트
+                                           ('exercise'), -- 4: 운동
+                                           ('formal'),   -- 5: 격식있는 자리
+                                           ('normal');   -- 6: 무관
+-- outfit과 situation 연결 (총 75개 아웃핏)
+-- outfit과 situation 연결 (총 75개 아웃핏)
 INSERT INTO outfit_situation (outfit_seq, situation_seq) VALUES
--- 일상 상황에 적합한 복장
-(1, 1),   -- 맨투맨
-(2, 1),   -- 반팔 티셔츠
-(4, 1),   -- 니트 스웨터
-(5, 1),   -- 후드티
-(6, 1),   -- 폴로 반팔티
-(10, 1),  -- 터틀넥 스웨터
-(12, 1),  -- 긴청바지
-(13, 1),  -- 긴면바지
-(14, 1),  -- 반바지
-(16, 1),  -- 트레이닝 팬츠
-(24, 1),  -- 후드 집업
-(31, 1),  -- 운동화
-(32, 1),  -- 슬리퍼
-(39, 1),  -- 스니커즈
+                                                             (1, 1), (1, 4), (1, 3),                 -- 기모_맨투맨: 일상, 운동, 데이트
+                                                             (2, 1), (2, 3),                         -- 니트_스웨터: 일상, 데이트
+                                                             (3, 1), (3, 2),                         -- 일반_맨투맨: 일상, 여행
+                                                             (4, 1), (4, 4),                         -- 후드티: 일상, 운동
+                                                             (5, 1), (5, 3),                         -- 셔츠: 일상, 데이트
+                                                             (6, 1), (6, 2),                         -- 린넨셔츠: 일상, 여행
+                                                             (7, 1), (7, 2),                         -- 얇은_니트: 일상, 여행
+                                                             (8, 1), (8, 4), (8, 5),                 -- 롱슬리브: 일상, 운동, 격식있는 자리
+                                                             (9, 1), (9, 3),                         -- 블라우스: 일상, 데이트
+                                                             (10, 1), (10, 5),                       -- 폴로_반팔티: 일상, 격식있는 자리
+                                                             (11, 1), (11, 2), (11, 3),              -- 반팔_티셔츠: 일상, 여행, 데이트
+                                                             (12, 1), (12, 4),                       -- 반팔_셔츠: 일상, 운동
+                                                             (13, 4),                                -- 드라이핏_티셔츠: 운동
+                                                             (14, 1), (14, 3),                       -- 크롭티: 일상, 데이트
+                                                             (15, 1), (15, 4),                       -- 나시: 일상, 운동
 
--- 여행 상황에 적합한 복장
-(1, 2),   -- 맨투맨
-(3, 2),   -- 셔츠
-(5, 2),   -- 후드티
-(8, 2),   -- 터틀넥 스웨터
-(12, 2),  -- 긴청바지
-(14, 2),  -- 반바지
-(20, 2),  -- 자켓
-(28, 2),  -- 바람막이
-(31, 2),  -- 운동화
-(39, 2),  -- 스니커즈
+-- 하의 (BOTTOM)
+                                                             (16, 1), (16, 4), (16, 3),              -- 기모바지: 일상, 운동, 데이트
+                                                             (17, 1), (17, 4),                       -- 트레이닝_팬츠: 일상, 운동
+                                                             (18, 1), (18, 4),                       -- 조거_팬츠: 일상, 운동
+                                                             (19, 1), (19, 2),                       -- 긴청바지: 일상, 여행
+                                                             (20, 1), (20, 3),                       -- 스키니_진: 일상, 데이트
+                                                             (21, 1), (21, 5),                       -- 긴면바지: 일상, 격식있는 자리
+                                                             (22, 1), (22, 4),                       -- 카고_팬츠: 일상, 운동
+                                                             (23, 1), (23, 2),                       -- 롱슬랙스: 일상, 여행
+                                                             (24, 1), (24, 4),                       -- 와이드_팬츠: 일상, 운동
+                                                             (25, 1), (25, 5),                       -- 레깅스: 일상, 격식있는 자리
+                                                             (26, 1), (26, 3),                       -- 롱_스커트: 일상, 데이트
+                                                             (27, 1), (27, 2),                       -- 청반바지: 일상, 여행
+                                                             (28, 4),                                -- 트레이닝_반바지: 운동
+                                                             (29, 1), (29, 3),                       -- 슬랙스_반바지: 일상, 데이트
+                                                             (30, 1), (30, 3),                       -- 미니_스커트: 일상, 데이트
 
--- 운동 상황에 적합한 복장
-(7, 3),   -- 후드티
-(10, 3),  -- 나시
-(14, 3),  -- 반바지
-(16, 3),  -- 트레이닝 팬츠
-(17, 3),  -- 조거 팬츠
-(24, 3),  -- 후드 집업
-(31, 3),  -- 운동화
-(39, 3),  -- 스니커즈
-(40, 3),  -- 크록스
+-- 아우터 (OUTERWEAR)
+                                                             (31, 1), (31, 4),                       -- 롱패딩: 일상, 운동
+                                                             (32, 1), (32, 2),                       -- 패딩: 일상, 여행
+                                                             (33, 1), (33, 3), (33, 5),              -- 코트: 일상, 데이트, 격식있는 자리
+                                                             (34, 2), (34, 3),                       -- 무스탕: 여행, 데이트
+                                                             (35, 1), (35, 2),                       -- 가죽자켓: 일상, 여행
+                                                             (36, 1), (36, 4),                       -- 경량_패딩: 일상, 운동
+                                                             (37, 1), (37, 4),                       -- 패딩_조끼: 일상, 운동
+                                                             (38, 1), (38, 3),                       -- 야구점퍼: 일상, 데이트
+                                                             (39, 1), (39, 3),                       -- 항공점퍼: 일상, 데이트
+                                                             (40, 1), (40, 5),                       -- 자켓: 일상, 격식있는 자리
+                                                             (41, 2), (41, 5),                       -- 트렌치코트: 여행, 격식있는 자리
+                                                             (42, 1), (42, 4),                       -- 바람막이: 일상, 운동
+                                                             (43, 1), (43, 4),                       -- 후드_집업: 일상, 운동
+                                                             (44, 5),                                -- 블레이져: 격식있는 자리
+                                                             (45, 1), (45, 3),                       -- 얇은_가디건: 일상, 데이트
 
--- 데이트 상황에 적합한 복장
-(3, 4),   -- 셔츠
-(5, 4),   -- 반팔셔츠
-(6, 4),   -- 린넨셔츠
-(15, 4),  -- 슬랙스
-(22, 4),  -- 코트
-(26, 4),  -- 트렌치코트
-(35, 4),  -- 로퍼
-(38, 4),  -- 하이힐
+-- 신발 (SHOES)
+                                                             (46, 1), (46, 2),                       -- 털부츠: 일상, 여행
+                                                             (47, 2), (47, 5),                       -- 롱부츠: 여행, 격식있는 자리
+                                                             (48, 1), (48, 4),                       -- 운동화: 일상, 운동
+                                                             (49, 1), (49, 4),                       -- 러닝화: 일상, 운동
+                                                             (50, 1), (50, 2),                       -- 레인부츠: 일상, 여행
+                                                             (51, 1), (51, 3),                       -- 워커: 일상, 데이트
+                                                             (52, 3), (52, 5),                       -- 로퍼: 데이트, 격식있는 자리
+                                                             (53, 1), (53, 3),                       -- 플랫슈즈: 일상, 데이트
+                                                             (54, 1), (54, 4),                       -- 스니커즈: 일상, 운동
+                                                             (55, 3), (55, 5),                       -- 하이힐: 데이트, 격식있는 자리
+                                                             (56, 1),                  -- 크록스: 일상
+                                                             (57, 1),                                -- 슬리퍼: 일상
+                                                             (58, 1),                                -- 샌들: 일상
+                                                             (59, 1),                                -- 쪼리: 일상
 
--- 격식있는 자리 상황에 적합한 복장
-(3, 5),   -- 셔츠
-(5, 5),   -- 반팔셔츠
-(8, 5),   -- 터틀넥 스웨터
-(15, 5),  -- 슬랙스
-(21, 5),  -- 자켓
-(22, 5),  -- 코트
-(26, 5),  -- 트렌치코트
-(35, 5),  -- 로퍼
-(37, 5),  -- 플랫슈즈
-(38, 5);  -- 하이힐
+-- 악세사리 (ACCESSORY)
+                                                             (60, 1), (60, 2), (60, 4),              -- 핫팩: 일상, 여행, 운동
+                                                             (61, 1), (61, 4),                       -- 장갑: 일상, 운동
+                                                             (62, 1), (62, 2),                       -- 귀마개: 일상, 여행
+                                                             (63, 1), (63, 3), (63, 5),              -- 목도리: 일상, 데이트, 격식있는 자리
+                                                             (64, 1),                                -- 플리스_모자: 일상
+                                                             (65, 1), (65, 5),                       -- 귀도리: 일상, 격식있는 자리
+                                                             (66, 1), (66, 2), (66, 3), (66, 4), (66, 5), -- 우산: 일상, 여행, 데이트, 운동, 격식있는 자리
+                                                             (67, 1), (67, 2),                       -- 자외선_차단제: 일상, 여행
+                                                             (68, 1), (68, 3),                       -- 선글라스: 일상, 데이트
+                                                             (69, 1), (69, 2),                       -- 양산: 일상, 여행
+                                                             (70, 1), (70, 4),                       -- 휴대용_선풍기: 일상, 운동
+                                                             (71, 1), (71, 4),                       -- 썬캡: 일상, 운동
+                                                             (72, 1), (72, 3),                       -- 마스크: 일상, 데이트
+                                                             (73, 1), (73, 4),                       -- 손목시계: 일상, 운동
+                                                             (74, 1), (74, 2),                       -- 부채: 일상, 여행
+                                                             (75, 1), (75, 3),-- 비니
+                                                             (76, 1),  (76, 2), -- 보조배터리
+                                                             (77, 1),    (77, 4) ,        -- 스마트워치
+                                                             (78, 3), (78, 5); -- 아날로그손목시계
 
 INSERT INTO `condition` (condition_name) VALUES
-                                   ('HOT'),
-                                   ('COLD'),
-                                   ('NORMAL');
+                                             ('HOT'),
+                                             ('COLD'),
+                                             ('NORMAL');
+
+
 
 -- 사용자 더미 데이터 삽입
 INSERT INTO user (user_social_site, user_id, user_name, user_nickname, user_phone_num, user_birth_date, user_gender, user_state, reg_date, style_seq, condition_seq, user_auth) VALUES

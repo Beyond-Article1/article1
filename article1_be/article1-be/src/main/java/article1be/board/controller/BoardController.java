@@ -74,7 +74,7 @@ public class BoardController {
 
             // 생성된 게시글의 URI를 설정
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{boardSeq}")
+                    .path("/board/{boardSeq}")
                     .buildAndExpand(createdBoard.getBoardSeq())
                     .toUri();
 
@@ -93,9 +93,16 @@ public class BoardController {
     )
     @DeleteMapping(value = "/{boardSeq}")
     public ResponseEntity<String> deleteBoard(@PathVariable("boardSeq") Long boardSeq) {
-        service.deleteBoard(boardSeq);
+        boolean isDeleted = service.deleteBoard(boardSeq);
 
-        return ResponseEntity.noContent().build();
+        if (isDeleted) {
+            return ResponseEntity.noContent().build(); // 삭제 성공 시 204 No Content 반환
+        } else {
+            // 게시글이 존재하지 않거나 삭제 실패 시
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND) // 404 Not Found
+                    .body("게시글을 찾을 수 없습니다."); // 메시지 본문에 추가
+        }
     }
 
     // 게시글 수정
@@ -112,11 +119,11 @@ public class BoardController {
             Board updatedBoard = service.upDateBoard(boardSeq, modData);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{boardSeq}")
+                    .path("/board/{boardSeq}")
                     .buildAndExpand(updatedBoard.getBoardSeq())
                     .toUri();
 
-            return ResponseEntity.ok("게시글이 성공적으로 수정되었습니다.");
+            return ResponseEntity.created(location).body("게시글이 성공적으로 수정되었습니다.");
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 수정 중 오류가 발생했습니다.");
