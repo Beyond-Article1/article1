@@ -284,28 +284,36 @@ public class OpenWeatherService {
         // 현재 시간
         LocalDateTime nowTime = LocalDateTime.now();
 
+        // 현재시간 ~ 사용자가 입력한 시간까지의 데이터 개수 (+1이 추가되어 반환된다 따라서 -1)
+        int excludeCnt = getCnt(nowTime, inputLocalDateTime);
+
         // 현재시간인지, 최근 데이터인지 검증 변수
         boolean checkDate = false;
 
         // 지정시간과 요청시간의 차이가 얼마 나지 않으면 현재 시간을 호출 (&& 3시간단위로 있는 다음 데이터시간과 1시간 이상 차이 나야함)
-        int timeDiff = inputLocalDateTime.getHour() / 3;
+        int timeDiff = inputLocalDateTime.getHour() / 3;    // 3시간 단위가 아니라면
         if (timeDiff != 0){
 
             // 다음 데이터가 있는 시간
             LocalDateTime dataDate = inputLocalDateTime.withHour((timeDiff + 1) * 3).withMinute(0).withSecond(0).withNano(0);
 
+            // 남은 시간 (3으로 나눠을때 반내림이 되면 excludeCnt -1)
+            float leftTime = (inputLocalDateTime.getHour() + inputLocalDateTime.getMinute() / 60.0f) / 3;
+            log.info("leftTime {}", leftTime);
+            log.info("timeDiff {}", timeDiff);
             // 지정시간이 현재시간보다 1시간 이내, 다음 데이터시간보다 1시간 이상일때는 현재시간으로 조회
             if (Duration.between(nowTime, inputLocalDateTime).toHours() <= 1 && Duration.between(inputLocalDateTime, dataDate).toHours() >= 1){
                 checkDate = true;
+            } else if (excludeCnt >= 1 && leftTime - timeDiff <= 0.5){
+                // 반내림이 되고, 입력시간이 현재시간보다 3시간 이후라면
+                excludeCnt -= 1;
+                log.info("excludeCnt {}", excludeCnt);
             }
         }
 
-        // 현재시간 ~ 사용자가 입력한 시간까지의 데이터 개수
-        int excludeCnt = getCnt(nowTime, inputLocalDateTime);
-
         // 현재시간 ~ 사용자가 입력한 시간의 다음날 00시까지의 데이터 개수
         // 현재 시간부터 다음날 00시까지 남은 시간 계산하기 (남은 시간 / 3, 다음날 00시 까지의 개수라서 +1)
-        int cnt = getCnt(nowTime, tomorrowTime);
+        int cnt = getCnt(nowTime, tomorrowTime) + 1;
 
         // 미래 데이터 가져오기
         OpenWeather5DayDTO openWeather5DayDTO = get5DayWeatherData(lat, lon, cnt);
@@ -314,7 +322,7 @@ public class OpenWeatherService {
         if (openWeather5DayDTO == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_WEATHER_DATA);
         }
-
+        log.info("2excludeCnt {}", excludeCnt);
         // 전체 데이터 리스트에서 현재 시간 ~ 사용자가 입력한 시간까지 제외하기
         List<WeatherListDTO> weatherListDTOS = openWeather5DayDTO.getList().subList(excludeCnt, openWeather5DayDTO.getList().size());
 
@@ -396,14 +404,11 @@ public class OpenWeatherService {
      */
     private int getCnt(LocalDateTime inputTime, LocalDateTime tomorrowTime) {
         // 현재 시간부터 다음날 00시까지 남은 시간 계산하기 (남은 시간 / 3, 다음날 00시 까지의 개수라서 +1)
-        long times = Duration.between(inputTime, tomorrowTime).toHours();
+        int times = (int) Math.floor(Duration.between(inputTime, tomorrowTime).toHours());
+        log.info("times {} ", times);
+        // 21시 이후 조회시 또는 현재시간과 지정시간 사이에 데이터가 없을 시
 
-        // 21시 이후 조회시 00시의 데이터만 가져옴
-        if (times == 0){
-            return 0;
-        }
-
-        return (int) (times / 3) + 1;
+        return times / 3;
     }
 
 }

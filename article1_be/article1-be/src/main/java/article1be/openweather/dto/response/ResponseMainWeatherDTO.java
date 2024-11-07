@@ -1,5 +1,6 @@
 package article1be.openweather.dto.response;
 
+import article1be.openweather.dto.weathers.WeatherDTO;
 import article1be.openweather.dto.weathers.WeatherListDTO;
 import lombok.Data;
 
@@ -37,11 +38,11 @@ public class ResponseMainWeatherDTO {
     // 지정시간 초미세먼지(PM10)
     private double pm10;
 
-    // 지정시점 ~ 24시이전까지의 날씨 데이터
-    private List<ChangeWeatherListDTO> list;
-
     // 현재시간
     private LocalDateTime nowTime;
+
+    // 지정시점 ~ 24시이전까지의 날씨 데이터
+    private List<ChangeWeatherListDTO> list;
 
     // WeatherListDTO 변환 및 세팅
     public void setList(List<WeatherListDTO> list) {
@@ -54,6 +55,22 @@ public class ResponseMainWeatherDTO {
             // DTO 데이터 변환
             ChangeWeatherListDTO changeWeatherListDTO = new ChangeWeatherListDTO();
             changeWeatherListDTO.setDt(weatherListDTO.getDt());
+
+            for(WeatherDTO weatherDTO : weatherListDTO.getWeather()){
+                int weatherDTOId = weatherDTO.getId();
+
+                // 실제 날씨 코드 저장
+                weatherDTO.setWeatherCode(weatherDTOId);
+
+                // 2xx, 3xx, 5xx 비와 관련된 날씨데이터 500으로 통일
+                if ((weatherDTOId >= 200 && weatherDTOId <= 232) 
+                        || (weatherDTOId >= 300 && weatherDTOId <= 321) 
+                        || (weatherDTOId >= 500 && weatherDTOId <= 531)) {
+                    weatherDTO.setId(500);
+                }
+            }
+            
+            // weather 넣기
             changeWeatherListDTO.setWeather(weatherListDTO.getWeather());
 
             // MainDTO 데이터 변환

@@ -15,4 +15,7 @@ public class WeatherDTO {
 
     /** 날씨 아이콘 ID */
     private String icon;
+
+    /** 실제 기상코드 */
+    private int weatherCode;
 }
