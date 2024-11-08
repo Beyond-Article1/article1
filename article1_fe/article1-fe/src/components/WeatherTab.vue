@@ -18,7 +18,7 @@ const nowDescription = ref('');
 const openWeather = ref([]);  // 날씨 데이터를 저장할 객체
 
 const getWeather = async () => {
-  time.value = '2024-11-07-17:12';
+  time.value = '2024-11-08-14:12';
   lat.value = '37.4972160230992';
   lon.value = '126.927607240617';
   await axios.get(`/weather`, {
@@ -111,7 +111,7 @@ const getPm10Text = (pm10) => {
     <div class="weather-container_top">
       <div class="weather-icon">
         <!-- 옵셔널 체이닝을 사용하여 안전하게 접근 -->
-        <img :src="`https://openweathermap.org/img/wn/${nowWeatherIcon}@2x.png`" alt="날씨 아이콘">
+        <img :src="`https://openweathermap.org/img/wn/${nowWeatherIcon}@2x.png`" alt="날씨 아이콘" width="180px">
       </div>
       <div class="weather-temp">
         <div class="now-temp">{{ nowTemp || '데이터 없음' }} ℃</div>
@@ -170,11 +170,13 @@ const getPm10Text = (pm10) => {
 
 <style scoped>
   .weather-container{
-    width: 250px;
+    width: 350px;
     text-align: center;
     background-color: rgb(0, 0, 0, 0.2);
-    height: 350px;
+    height: 480px;
     padding: 10px;
+    border-radius: 15px;
+    max-height: 700px;
   }
   .now-temp, .weather-description{
     font-size: 23px;
@@ -183,9 +185,16 @@ const getPm10Text = (pm10) => {
   .weather-description{
     margin-top: 5px;
   }
+  .weather-container_bottom{
+    margin-top: 5%;
+  }
   .weather-feel{
+    margin-top: 15px;
     text-align: right;
-    font-size: 12px;
+    font-size: 14px;
+  }
+  hr{
+    margin-top: 5%;
   }
   .min_max-temp{
     display: flex;
@@ -194,12 +203,12 @@ const getPm10Text = (pm10) => {
     font-weight: bold;
   }
   .min_max-temp .temp{
-    margin-top: 5px;
+
   }
   .pm-box{
     display: flex;
     justify-content: space-around;
-    margin-top: 10px;
+    margin-top: 5%;
   }
   .pm{
     width: 90px;

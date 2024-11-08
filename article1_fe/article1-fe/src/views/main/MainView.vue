@@ -1,26 +1,23 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {useAuthStore} from "@/store/authStore.js";
-import axios from "axios";
 
 const termsRef = ref(null);
 const showTerms = ref(false);
 
 // store 생성
-const useStore = useAuthStore();
+const store = useAuthStore();
 
 // 로그인 관련 이벤트 Mounted
 onMounted(() => {
+  const token = getCookie('token');
 
-  // 로그인이 되어있지 않을때
-  if (!useStore.accessToken){
-    const token = getCookie('token');  // 쿠키에서 'token' 값 가져오기
-    if (token) {
-      console.log('쿠키에서 토큰을 가져왔습니다:', token);
-      useStore.login(token);  // 로그인설정
-    } else {
-      console.log('쿠키에 토큰이 없습니다.');
-    }
+  // Store에 토큰이 없는 경우에만 쿠키에서 로그인 시도
+  if (!store.accessToken && token) {
+    console.log('쿠키에서 토큰을 가져왔습니다:', token);
+    store.login(token);
+  } else {
+    console.log('쿠키에 토큰이 없습니다 또는 이미 로그아웃 상태입니다.');
   }
 });
 
