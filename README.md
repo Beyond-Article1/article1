@@ -132,7 +132,7 @@
 <summary>카카오 소셜 로그인</summary>
 <div markdown="1">
 
-![카카오로그인](/images/로그인/카카오톡 소셜 로그인.gif)
+![카카오로그인](/images/로그인/카카오톡%20소셜%20로그인.gif)
 
 </div>
 </details>
@@ -141,7 +141,7 @@
 <summary>네이버 소셜 로그인</summary>
 <div markdown="1">
 
-![네이버로그인](/images/로그인/네이버 소셜 로그인.gif)
+![네이버로그인](/images/로그인/네이버%20소셜%20로그인.gif)
 
 </div>
 </details>
@@ -151,7 +151,7 @@
 <summary>비로그인 게스트 의상 추천</summary>
 <div markdown="1">
 
-![비로그인옷추천](/images/마이페이지/비로그인 옷 추천.gif)
+![비로그인옷추천](/images/마이페이지/비로그인%20옷%20추천.gif)
 
 </div>
 </details>
@@ -160,7 +160,7 @@
 <summary>로그인 회원 의상 추천</summary>
 <div markdown="1">
 
-![로그인회원의상추천](/images/마이페이지/로그인 회원 의상 추천.gif)
+![로그인회원의상추천](/images/마이페이지/로그인%20회원%20의상%20추천.gif)
 
 </div>
 </details>
@@ -170,7 +170,7 @@
 <summary>회원정보 조회, 수정</summary>
 <div markdown="1">
 
-![회원정보수정](/images/마이페이지/회원정보 수정.gif)
+![회원정보수정](/images/마이페이지/회원정보%20수정.gif)
 
 </div>
 </details>
@@ -179,7 +179,7 @@
 <summary>선호도 조회, 수정</summary>
 <div markdown="1">
 
-![선호도수정](/images/마이페이지/선호도 수정.gif)
+![선호도수정](/images/마이페이지/선호도%20수정.gif)
 
 </div>
 </details>
@@ -188,7 +188,7 @@
 <summary>아웃핏 통계 조회</summary>
 <div markdown="1">
 
-![아웃핏통계조회](/images/마이페이지/마이페이지 아웃핏 통계 조회.gif)
+![아웃핏통계조회](/images/마이페이지/마이페이지%20아웃핏%20통계%20조회.gif)
 
 </div>
 </details>
@@ -197,7 +197,7 @@
 <summary>나의 리뷰 조회</summary>
 <div markdown="1">
 
-![나의리뷰조회](/images/마이페이지/마이페이지 리뷰 조회.gif)
+![나의리뷰조회](/images/마이페이지/마이페이지%20리뷰%20조회.gif)
 
 </div>
 </details>
@@ -206,7 +206,7 @@
 <summary>나의 게시글 조회</summary>
 <div markdown="1">
 
-![아웃핏통계조회](/images/마이페이지/마이페이지 게시글 조회.gif)
+![아웃핏통계조회](/images/마이페이지/마이페이지%20게시글%20조회.gif)
 
 </div>
 </details>
@@ -216,7 +216,7 @@
 <summary>전체 리뷰 조회</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/전체 리뷰 조회.gif)
+![리뷰작성](/images/리뷰/전체%20리뷰%20조회.gif)
 
 </div>
 </details>
@@ -225,7 +225,7 @@
 <summary>리뷰 조회 - 위치 필터링</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/리뷰 위치 필터링.gif)
+![리뷰작성](/images/리뷰/리뷰%20위치%20필터링.gif)
 
 </div>
 </details>
@@ -234,7 +234,7 @@
 <summary>리뷰 조회 - 닉네임 필터링</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/리뷰 닉네임 필터링.gif)
+![리뷰작성](/images/리뷰/리뷰%20닉네임%20필터링.gif)
 
 </div>
 </details>
@@ -243,7 +243,7 @@
 <summary>아웃핏 리뷰 작성</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/옷 리뷰 작성.gif)
+![리뷰작성](/images/리뷰/옷%20리뷰%20작성.gif)
 
 </div>
 </details>
@@ -252,7 +252,7 @@
 <summary>아웃핏 리뷰 수정</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/옷 리뷰 수정.gif)
+![리뷰작성](/images/리뷰/옷%20리뷰%20수정.gif)
 
 </div>
 </details>
@@ -261,7 +261,7 @@
 <summary>아웃핏 리뷰 삭제</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/옷 리뷰 삭제.gif)
+![리뷰작성](/images/리뷰/옷%20리뷰%20삭제.gif)
 
 </div>
 </details>
@@ -270,7 +270,7 @@
 <summary>리뷰 신고</summary>
 <div markdown="1">
 
-![리뷰작성](/images/리뷰/리뷰 신고.gif)
+![리뷰작성](/images/리뷰/리뷰%20신고.gif)
 
 </div>
 </details>
@@ -280,7 +280,7 @@
 <summary>게시판 목록 조회</summary>
 <div markdown="1">
 
-![게시글등록](/images/게시판/게시판 목록 조회.gif)
+![게시글등록](/images/게시판/게시판%20목록%20조회.gif)
 
 </div>
 </details>
@@ -289,7 +289,7 @@
 <summary>게시글 작성</summary>
 <div markdown="1">
 
-![게시글등록](/images/게시판/게시판 글 등록.gif)
+![게시글등록](/images/게시판/게시판%20글%20등록.gif)
 
 </div>
 </details>
@@ -298,7 +298,7 @@
 <summary>게시글 수정</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/게시글 수정.gif)
+![게시글수정](/images/게시판/게시글%20수정.gif)
 
 </div>
 </details>
@@ -307,7 +307,7 @@
 <summary>게시글 삭제</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/게시글 삭제.gif)
+![게시글수정](/images/게시판/게시글%20삭제.gif)
 
 </div>
 </details>
@@ -316,7 +316,7 @@
 <summary>게시글 신고</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/게시물 신고.gif)
+![게시글수정](/images/게시판/게시물%20신고.gif)
 
 </div>
 </details>
@@ -325,7 +325,7 @@
 <summary>댓글 등록</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/게시판 댓글 등록.gif)
+![게시글수정](/images/게시판/게시판%20댓글%20등록.gif)
 
 </div>
 </details>
@@ -334,7 +334,7 @@
 <summary>댓글 삭제</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/댓글 삭제.gif)
+![게시글수정](/images/게시판/댓글%20삭제.gif)
 
 </div>
 </details>
@@ -343,7 +343,7 @@
 <summary>댓글 신고</summary>
 <div markdown="1">
 
-![게시글수정](/images/게시판/댓글 신고.gif)
+![게시글수정](/images/게시판/댓글%20신고.gif)
 
 </div>
 </details>
@@ -353,7 +353,7 @@
 <summary>관리자 로그인</summary>
 <div markdown="1">
 
-![관리자로그인](/images/관리자/관리자 로그인.gif)
+![관리자로그인](/images/관리자/관리자%20로그인.gif)
 
 </div>
 </details>
@@ -362,7 +362,7 @@
 <summary>관리자 유저 검색</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 유저 검색.gif)
+![관리자유저검색](/images/관리자/관리자%20유저%20검색.gif)
 
 </div>
 </details>
@@ -371,7 +371,7 @@
 <summary>관리자 유저 검색(권한)</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 유저 검색(권한).gif)
+![관리자유저검색](/images/관리자/관리자%20유저%20검색(권한).gif)
 
 </div>
 </details>
@@ -380,7 +380,7 @@
 <summary>관리자 회원 정보 변경</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 회원 상태 변경.gif)
+![관리자유저검색](/images/관리자/관리자%20회원%20상태%20변경.gif)
 
 </div>
 </details>
@@ -389,7 +389,7 @@
 <summary>관리자 신고 조회</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 신고 조회.gif)
+![관리자유저검색](/images/관리자/관리자%20신고%20조회.gif)
 
 </div>
 </details>
@@ -398,7 +398,7 @@
 <summary>관리자 신고 상태 변경</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 신고 상태 변경.gif)
+![관리자유저검색](/images/관리자/관리자%20신고%20상태%20변경.gif)
 
 </div>
 </details>
@@ -407,7 +407,7 @@
 <summary>관리자 리뷰 상태 변경</summary>
 <div markdown="1">
 
-![관리자유저검색](/images/관리자/관리자 리뷰 상태 변경.gif)
+![관리자유저검색](/images/관리자/관리자%20리뷰%20상태%20변경.gif)
 
 </div>
 </details>
