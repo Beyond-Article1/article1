@@ -127,7 +127,7 @@
 <br>
 
 ## 8. 시스템 아키텍처
-![SystemArchitecture](https://github.com/user-attachments/assets/dc71c041-afd3-4488-829a-8cc0d2968b3c)
+![SystemArchitecture](https://github.com/user-attachments/assets/93161e03-6c0c-4a23-a1fc-ba59e434c280)
 
 <br>
 
@@ -625,6 +625,40 @@ spec:
   ```
 </details>
 
+
+<details>
+  <summary>backend-ingress</summary>
+
+  ```Kubernetes manifest
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"                             # SSL 리디렉션 비활성화
+    nginx.ingress.kubernetes.io/rewrite-target: /$2                                # URL 경로 재작성
+    nginx.ingress.kubernetes.io/proxy-body-size: "3G"                             # 최대 요청 본문 크기 설정
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "3G"                     # 클라이언트 요청 버퍼 크기 설정
+    nginx.ingress.kubernetes.io/affinity: "cookie"                                 # 쿠키 기반 세션 스티키니스 활성화
+    nginx.ingress.kubernetes.io/session-cookie-name: "teenkiri-session"           # 세션 쿠키 이름
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"                        # 쿠키 해시 알고리즘 (SHA-1)
+    kubernetes.io/ingress.class: nginx                                              # Ingress 컨트롤러 지정
+    cert-manager.io/cluster-issuer: letsencrypt-prod                               # Let's Encrypt 인증서 발급
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /boot(/|$)(.*)  # /boot로 시작하는 경로에 대해 처리
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 8080
+  ```
+</details>
+
 <details>
   <summary>frontend-dep</summary>
 
@@ -682,42 +716,29 @@ spec:
 </details>
 
 <details>
-  <summary>ingress</summary>
+  <summary>fronted-ingress</summary>
 
   ```Kubernetes manifest
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: article1-ingress
+  name: frontend-ingress
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/proxy-body-size: "3G"                     # 최대 요청 본문 크기 설정
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "3G"              # 클라이언트 요청 버퍼 크기 설정
-    nginx.ingress.kubernetes.io/affinity: "cookie"                          # 쿠키 기반 세션 스티키니스 활성화
-    nginx.ingress.kubernetes.io/session-cookie-name: "teenkiri-session"    # 세션 쿠키 이름
-    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"                 # 쿠키 해시 알고리즘 (SHA-1)
-    kubernetes.io/ingress.class: nginx                                       # Ingress 컨트롤러 지정
-    cert-manager.io/cluster-issuer: letsencrypt-prod                        # Let's Encrypt 인증서 발급
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # SSL 리디렉션 비활성화
+    nginx.ingress.kubernetes.io/rewrite-target: /$2   # URL 경로 재작성
+    kubernetes.io/ingress.class: nginx                 # Ingress 컨트롤러 지정
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - path: /()(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: frontend
-            port:
-              number: 80
-      - path: /boot(/|$)(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: backend
-            port:
-              number: 8080
+    - http:
+        paths:
+          - path: /()(.*)  # 기본 경로를 /로 시작하는 모든 요청 처리
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
   ```
 </details>
 
@@ -863,16 +884,24 @@ pipeline {
                         withCredentials([file(credentialsId: 'application-aws', variable: 'applicationAwsFile')]) {
                             sh 'cp ${applicationAwsFile} article1_be/article1-be/src/main/resources/application-aws.yml'
                         }
+                        // .env 파일 복사
+                        withCredentials([file(credentialsId: 'front_env', variable: 'frontEnvFile')]) {
+                            sh 'cp ${frontEnvFile} article1_fe/article1-fe/.env'
+                        }
                     } else {
                         withCredentials([file(credentialsId: 'application-aws', variable: 'applicationAwsFile')]) {
                             bat "copy %applicationAwsFile% article1_be\\article1-be\\src\\main\\resources\\application-aws.yml"
+                        }
+                        // .env 파일 복사
+                        withCredentials([file(credentialsId: 'front_env', variable: 'frontEnvFile')]) {
+                            bat "copy %frontEnvFile% article1_fe\\article1-fe\\.env"
                         }
                     }
                 }
             }
         }
 
-        stage('Source Build') {
+        stage('Source Build (BE)') {
             steps {
                 git branch: 'develop', url: "${env.GITHUB_URL}"
                 script {
@@ -886,7 +915,7 @@ pipeline {
             }
         }
 
-        stage('Container Build and Push') {
+        stage('Container Build and Push (BE)') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
@@ -898,6 +927,39 @@ pipeline {
                             bat "docker build -t ${DOCKER_USER}/article1_spring:latest article1_be\\article1-be\\"
                             bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
                             bat "docker push ${DOCKER_USER}/article1_spring:latest"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Source Build (FE)') {
+            steps {
+                git branch: 'develop', url: "${env.GITHUB_URL}"
+                script {
+                    if (isUnix()) {
+                        sh 'cd article1_fe/article1-fe && npm install'
+                        sh 'cd article1_fe/article1-fe && npm run build'
+                    } else {
+                        bat 'cd article1_fe\\article1-fe && npm install'
+                        bat 'cd article1_fe\\article1-fe && npm run build'
+                    }
+                }
+            }
+        }
+
+        stage('Container Build and Push (FE)') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        if (isUnix()) {
+                            sh "docker build -t ${DOCKER_USER}/article1_vue:latest ./article1_fe/article1-fe/"
+                            sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                            sh "docker push ${DOCKER_USER}/article1_vue:latest"
+                        } else {
+                            bat "docker build -t ${DOCKER_USER}/article1_vue:latest article1_fe\\article1-fe\\"
+                            bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                            bat "docker push ${DOCKER_USER}/article1_vue:latest"
                         }
                     }
                 }
@@ -923,6 +985,7 @@ pipeline {
         }
     }
 }
+
   ```
 </details>
 
