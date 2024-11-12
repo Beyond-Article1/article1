@@ -49,7 +49,7 @@ const badgeText = computed(() => {
 
 const fetchUserData = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/detail`, {
+    const response = await axios.get(`/user/detail`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       }
@@ -63,7 +63,7 @@ const fetchUserData = async () => {
 
 const editNickname = async() => {
   try {
-    const response = await axios.put(`http://localhost:8080/user/nickname`, {
+    const response = await axios.put(`/user/nickname`, {
       userNickname: userData.value.userNickname, // 수정된 닉네임
     }, {
       headers: {
@@ -98,7 +98,7 @@ const deleteUser = async () => {
 
   if (isConfirmed) {
     try {
-      const response = await axios.delete(`http://localhost:8080/user`, {
+      const response = await axios.delete(`/user`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }

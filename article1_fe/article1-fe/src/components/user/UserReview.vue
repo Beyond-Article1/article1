@@ -20,7 +20,7 @@ export default {
 
     const fetchDataSelectedRecords = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user/selectedRecords", {
+        const response = await axios.get("/user/selectedRecords", {
           headers: {
             Authorization: `Bearer ${authStore.accessToken}`
           }
@@ -38,7 +38,7 @@ export default {
 
     const fetchDataMyReview = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/review/myreview", {
+        const response = await axios.get("/review/myreview", {
           headers: {
             Authorization: `Bearer ${authStore.accessToken}`
           }

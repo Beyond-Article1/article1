@@ -23,7 +23,7 @@ onMounted(() => {
     isLogin.value = true;
     // 닉네임 등 입력이 안되어있으면 이동
     if (isNewMember === 'Y'){
-      // router.push('/user/data');
+      router.push('/user/data');
     }
   } else {
     console.log('쿠키에 토큰이 없습니다 또는 이미 로그아웃 상태입니다.');

@@ -39,9 +39,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         UserState userState = principalDetails.getUser().getUserState();
 
         if (userState.equals(UserState.DELETE)) {
-            response.sendRedirect("http://localhost:5173/user/delete");
+            response.sendRedirect("http://localhost:80/user/delete");
         } else if (userState.equals(UserState.BAN)) {
-            response.sendRedirect("http://localhost:5173/user/ban");
+            response.sendRedirect("http://localhost:80/user/ban");
         } else {
             // 권한을 꺼내 List<String> 으로 변환
             List<String> authorities = authentication.getAuthorities().stream()
@@ -98,10 +98,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             // 리다이렉트
             if(newMember.equals("Y")) {
-                response.sendRedirect("http://localhost:5173/user/data");
+                response.sendRedirect("http://localhost:80/user/data");
             }
             else {
-                response.sendRedirect("http://localhost:5173");
+                response.sendRedirect("http://localhost:80");
             }
         }
     }

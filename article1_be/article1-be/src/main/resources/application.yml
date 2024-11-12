@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:${db.port}/${db.dbname}
+    url: jdbc:mariadb://${db.host}:${db.port}/${db.dbname}
     username: ${db.username}
     password: ${db.password}
 
@@ -79,7 +79,7 @@ logging:
 
 springdoc:
   swagger-ui:
-    path: /
+    path: /boot/swagger
     groups-order: DESC # path, query, body, response 순으로 출력
 
 token:

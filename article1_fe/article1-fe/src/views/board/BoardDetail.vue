@@ -49,7 +49,7 @@ function openModal() {
 async function fetchBoardData() {
   try {
     const boardSeq = route.params.boardSeq;
-    const response = await axios.get(`http://localhost:8080/board/${boardSeq}`, {
+    const response = await axios.get(`/board/${boardSeq}`, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -110,7 +110,7 @@ function handleDeleteReply(replySeq) {
 async function deleteBoard() {
   try {
     const boardSeq = route.params.boardSeq;
-    const response = await axios.delete(`http://localhost:8080/board/${boardSeq}`, {
+    const response = await axios.delete(`/board/${boardSeq}`, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }

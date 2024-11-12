@@ -27,7 +27,7 @@ const boardList = ref([]);
 // 데이터 호출
 const fetchData = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/board", {
+    const response = await axios.get("/board", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }

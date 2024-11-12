@@ -1,9 +1,6 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import dotenv from 'dotenv';
 import path from 'path';
-
-dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
 
 export default defineConfig({
   plugins: [vue()],
@@ -13,6 +10,9 @@ export default defineConfig({
     },
   },
   define: {
-    'process.env': process.env,
+    'import.meta.env': {
+      VITE_KAKAO_API_KEY: JSON.stringify(process.env.VITE_KAKAO_API_KEY),
+      VITE_KAKAO_REST_API_KEY: JSON.stringify(process.env.VITE_KAKAO_REST_API_KEY),
+    }
   },
 });

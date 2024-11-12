@@ -21,7 +21,7 @@ const showModal = ref(false);
 
 const fetchDataSelectedRecords = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/user/selectedRecords", {
+    const response = await axios.get("/user/selectedRecords", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -35,7 +35,7 @@ const fetchDataSelectedRecords = async () => {
         await fetchDataSelectedOutfit(record.selectSeq);
 
         // 리뷰가 존재하는지 확인
-        const reviewResponse = await axios.get("http://localhost:8080/review/myreview", {
+        const reviewResponse = await axios.get("/review/myreview", {
           headers: {
             Authorization: `Bearer ${authStore.accessToken}`
           }
@@ -53,7 +53,7 @@ const fetchDataSelectedRecords = async () => {
 
 const fetchDataSelectedOutfit = async (selectSeq) => {
   try {
-    const response = await axios.get("http://localhost:8080/user/selectedOutfit", {
+    const response = await axios.get("/user/selectedOutfit", {
       params: { selectSeq: selectSeq },
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
@@ -121,7 +121,7 @@ const openModal = (id) => {
 
 const fetchDataDetail = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/user/detail", {
+    const response = await axios.get("/user/detail", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -139,7 +139,7 @@ const fetchDataDetail = async () => {
 
 const fetchDataMyReview = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/review/myreview", {
+    const response = await axios.get("/review/myreview", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -205,7 +205,7 @@ const submitReview = async () => {
           }))
     };
 
-    const response = await axios.post(`http://localhost:8080/review/user/${userSeq}`, reviewData, {
+    const response = await axios.post(`/review/user/${userSeq}`, reviewData, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -260,7 +260,7 @@ const updateReview = async () => {
       reviewBlind: feedback.value === '좋아요' ? 0 : 1,
     };
 
-    const response = await axios.put(`http://localhost:8080/review/${myReviewData.reviewSeq}`, updateData, {
+    const response = await axios.put(`/review/${myReviewData.reviewSeq}`, updateData, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -301,7 +301,7 @@ const deleteReview = async () => {
   }
 
   try {
-    const response = await axios.delete(`http://localhost:8080/review/${myReviewData.reviewSeq}`, {
+    const response = await axios.delete(`/review/${myReviewData.reviewSeq}`, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }

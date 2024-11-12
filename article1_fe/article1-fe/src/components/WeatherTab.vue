@@ -55,6 +55,9 @@ async function getWeather () {
           pm10.value = openWeather.value.pm10;
           nowDescription.value = openWeather.value.nowWeatherDescription;
 
+          console.log("nowWeatherIcon", nowWeatherIcon.value);
+          console.log("pm2_5", pm2_5.value);
+          console.log("pm10", pm10.value);
           weatherStore.setWeatherCode(nowWeatherCode.value);
         }
       })

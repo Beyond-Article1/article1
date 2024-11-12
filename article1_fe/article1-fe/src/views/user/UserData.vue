@@ -29,9 +29,12 @@ const handleRegisterUser = async () => {
       styleSeq: styleSeq.value,
     };
 
-    await axios.post('http://localhost:8080/user/data', userData); // Authorization 헤더는 기본 설정 사용
+    await axios.post('/user/data', userData); // Authorization 헤더는 기본 설정 사용
     alert('사용자 정보와 선호도가 등록되었습니다.');
-    router.push("/");
+
+      deleteCookie('token'); // 쿠키 삭제
+
+      router.push("/");
   } catch (error) {
     console.error('등록 실패:', error);
 
@@ -48,6 +51,12 @@ const handleRegisterUser = async () => {
     }
   }
 };
+function deleteCookie(name) {
+  document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+  if (document.domain) {
+    document.cookie = `${name}=; Path=/; Domain=${document.domain}; Expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+  }
+}
 
 const authStore = useAuthStore();
 

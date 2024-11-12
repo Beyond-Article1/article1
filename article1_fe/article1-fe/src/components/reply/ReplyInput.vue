@@ -43,7 +43,7 @@ async function submitComment() {
 async function registerReply(replyContent) {
   try {
     const boardSeq = route.params.boardSeq;
-    const response = await axios.post(`http://localhost:8080/reply/${boardSeq}`, {
+    const response = await axios.post(`/reply/${boardSeq}`, {
       replyContent: replyContent // 입력된 댓글 내용을 서버로 전송
     }, {
       headers: {

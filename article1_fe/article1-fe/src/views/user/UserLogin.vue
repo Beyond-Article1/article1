@@ -11,13 +11,13 @@ const redirectToSocial = (platform) => {
   // 각 소셜 로그인 플랫폼에 맞는 URL로 리디렉션
   switch (platform) {
     case 'kakao':
-      url = 'http://localhost:8080/oauth2/authorization/kakao';
+      url = '/boot/oauth2/authorization/kakao';
       break;
     case 'naver':
-      url = 'http://localhost:8080/oauth2/authorization/naver';
+      url = '/boot/oauth2/authorization/naver';
       break;
     case 'google':
-      url = 'http://localhost:8080/oauth2/authorization/google';
+      url = '/boot/oauth2/authorization/google';
       break;
     default:
       break;

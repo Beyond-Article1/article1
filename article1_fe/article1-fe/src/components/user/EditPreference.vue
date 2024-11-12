@@ -17,7 +17,7 @@ const updatedPreference = ref({
 
 const fetchPreferenceData = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/preference`, {
+    const response = await axios.get(`/user/preference`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       }
@@ -44,7 +44,7 @@ const handlePreferenceEdit = async () => {
   };
 
   try {
-    await axios.put(`http://localhost:8080/user/preference`, formData, {
+    await axios.put(`/user/preference`, formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         "Content-Type": "application/json"

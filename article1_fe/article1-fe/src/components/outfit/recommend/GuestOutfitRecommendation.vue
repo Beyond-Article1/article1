@@ -113,7 +113,7 @@ export default {
         this.isLoading = true;
         let date = new Date(store.selectedDate);
         date.setHours(date.getHours() + 9);
-        const response = await axios.post("http://localhost:8080/guest/outfit/recommendations", {
+        const response = await axios.post("/guest/outfit/recommendations", {
           situationSeq: store.selectedSituation,
           requestedAt: date.toISOString().split(".")[0],
           latitude: store.selectedLatitude,

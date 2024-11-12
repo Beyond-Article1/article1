@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: dlacofbs/article1_spring:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: aws
+            - name: db.host
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: db.host
+            # ConfigMap에서 가져온 환경 변수들
+            - name: db.port
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: db.port
+            - name: db.dbname
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: db.dbname
+            - name: open.weather.api.key
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: open.weather.api.key
+            - name: open.weather.current.api.url
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: open.weather.current.api.url
+            - name: open.weather.5day.api.url
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: open.weather.5day.api.url
+            - name: open.weather.air.api.url
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: open.weather.air.api.url
+            - name: open.weather.air.forecast.url
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: open.weather.air.forecast.url
+            - name: amazon.s3.access-key
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: amazon.s3.access-key
+            - name: kakao.api.client_id
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kakao.api.client_id
+            - name: kakao.api.client_secret
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kakao.api.client_secret
+            - name: kakao.api.redirect_uri
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kakao.api.redirect_uri
+
+            # Secret에서 가져온 환경 변수들
+            - name: db.username
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: db.username
+            - name: db.password
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: db.password
+            - name: root_password
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: root_password
+            - name: my_database
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: my_database
+            - name: my_user
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: my_user
+            - name: my_password
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: my_password
+            - name: VITE_KAKAO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: VITE_KAKAO_API_KEY
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SECRET_KEY
+
+          args:
+            - "/usr/local/bin/dockerize"
+            - "-wait"
+            - "tcp://mariadb:3306"     # 환경 변수로 포트 사용
+            - "-timeout"
+            - "30s"                  # ConfigMap에서 가져온 timeout 값 사용
+            - "java"
+            - "-jar"
+            - "app.jar"

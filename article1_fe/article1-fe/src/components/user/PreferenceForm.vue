@@ -2,16 +2,16 @@
 import { ref, defineProps, defineEmits, watch } from "vue";
 
 const conditionOptions = ref([
-  { value: 1, label: "더위를 많이 탄다", image: "/src/assets/images/user/Condition-Hot.png" },
-  { value: 2, label: "추위를 많이 탄다", image: "/src/assets/images/user/Condition-Cold.png" },
-  { value: 3, label: "무관", image: "/src/assets/images/situation/none.png" }
+  { value: 1, label: "더위를 많이 탄다", image: new URL('/assets/images/user/Condition-Hot.png', import.meta.url).href },
+  { value: 2, label: "추위를 많이 탄다", image: new URL('/assets/images/user/Condition-Cold.png', import.meta.url).href },
+  { value: 3, label: "무관", image: new URL('/assets/images/situation/none.png', import.meta.url).href }
 ]);
 
 const styleOptions = ref([
-  { value: 1, label: "캐주얼", image: "/src/assets/images/user/Style-Casual.png" },
-  { value: 2, label: "포멀", image: "/src/assets/images/user/Style-Formal.png" },
-  { value: 3, label: "스포티", image: "/src/assets/images/user/Style-Sporty.png" },
-  { value: 4, label: "무관", image: "/src/assets/images/situation/none.png" }
+  { value: 1, label: "캐주얼", image: new URL('/assets/images/user/Style-Casual.png', import.meta.url).href },
+  { value: 2, label: "포멀", image: new URL('/assets/images/user/Style-Formal.png', import.meta.url).href },
+  { value: 3, label: "스포티", image: new URL('/assets/images/user/Style-Sporty.png', import.meta.url).href },
+  { value: 4, label: "무관", image: new URL('/assets/images/situation/none.png', import.meta.url).href }
 ]);
 
 // props로 전달 받은 값

@@ -13,7 +13,7 @@ const itemsPerPage = 4;
 
 const fetchDataDetail = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/user/detail", {
+    const response = await axios.get("/user/detail", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -31,7 +31,7 @@ const fetchDataDetail = async () => {
 
 const fetchDataBoard = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/board", {
+    const response = await axios.get("/board", {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }

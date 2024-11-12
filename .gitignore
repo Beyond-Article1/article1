@@ -43,6 +43,12 @@ out/
 ### AWS ###
 application-aws.yml
 
+### 쿠버네티스 무시 ###
+article1_k8s/configmaps/
+
+### 도커컴포즈 무시 ###
+docker-compose.yml
+
 # Logs
 logs
 *.log

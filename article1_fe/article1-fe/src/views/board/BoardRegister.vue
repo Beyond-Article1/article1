@@ -60,7 +60,7 @@ async function sendData() {
     }
 
     // 서버에 POST 요청
-    const response = await axios.post(`http://localhost:8080/board`, formData, {
+    const response = await axios.post(`/board`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${authStore.accessToken}`
